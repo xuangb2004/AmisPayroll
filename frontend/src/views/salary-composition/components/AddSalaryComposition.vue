@@ -355,14 +355,63 @@ const save = async () => {
   if (!validateForm()) return;
 
   try {
-   
-    await axios.post('http://localhost:5094/api/v1/SalaryCompositions', form.value);
+    // 1. ÁNH XẠ DỮ LIỆU TỪ FORM VUE SANG DTO CỦA C#
     
-    console.log("Đã lưu vào DB thành công:", form.value);
+    // Map CompositionType (Giả sử: 1 = Lương, 2 = Phụ cấp, 3 = Phúc lợi)
+    let typeInt = 1;
+    if (form.value.type === 'Phụ cấp') typeInt = 2;
+    if (form.value.type === 'Phúc lợi') typeInt = 3;
 
+    // Map CompositionNature (Theo DB: 1 = Thu nhập, 2 = Khấu trừ, 3 = Khác)
+    let natureInt = 1;
+    if (form.value.nature === 'Khấu trừ') natureInt = 2;
+    if (form.value.nature === 'Khác') natureInt = 3;
+
+    // Map ValueType (Giả sử: 1 = Tiền tệ, 2 = Phần trăm, 3 = Hệ số)
+    let valueTypeInt = 1;
+    if (form.value.valueType === 'Phần trăm') valueTypeInt = 2;
+    if (form.value.valueType === 'Hệ số') valueTypeInt = 3;
+
+    // Map Hiển thị phiếu lương (Có = 1, Không = 0)
+    let isDisplay = form.value.showOnPayslip === 'Có' ? 1 : 0;
+    
+    // Map Cho phép vượt định mức
+    let allowExceed = form.value.allowExceedNorm ? 1 : 0;
+
+    // 2. TẠO PAYLOAD ĐÚNG CHUẨN CreateSalaryCompositionDto.cs
+    const payload = {
+      // TẠM THỜI lấy ID đơn vị đầu tiên trong mảng để test API (Cần bạn quyết định logic Vấn đề 1)
+      OrganizationId: form.value.units.length > 0 ? form.value.units[0] : null, 
+      
+      CompositionCode: form.value.code,
+      CompositionName: form.value.name,
+      CompositionType: typeInt,
+      CompositionNature: natureInt,
+      TaxNature: null, // Bổ sung logic map Tax nếu cần
+      NormFormula: form.value.norm,
+      IsAllowExceedNorm: allowExceed,
+      ValueType: valueTypeInt,
+      Amount: form.value.valueOption === 1 ? (Number(form.value.valueInput) || 0) : 0,
+      CalculationFormula: form.value.valueOption === 2 ? form.value.customFormula : null,
+      Description: form.value.description,
+      IsDisplayOnPayslip: isDisplay
+    };
+
+    console.log("Payload gửi lên C#:", payload);
+
+    // 3. GỌI AXIOS
+    // Đã đổi port theo file launchSettings.json của bạn (http://localhost:5094)
+    await axios.post('http://localhost:5094/api/v1/SalaryCompositions', payload);
+    
+    console.log("Đã lưu vào DB thành công!");
     emit('save-success'); 
+
   } catch (error) {
-    console.error("Lỗi kết nối API không lưu được:", error);
+    console.error("Lỗi kết nối API:", error);
+    if (error.response) {
+      // In ra lỗi cụ thể từ C# (Ví dụ: Lỗi validation 400 Bad Request)
+      console.error("Chi tiết lỗi từ C#:", error.response.data);
+    }
   }
 };
 
