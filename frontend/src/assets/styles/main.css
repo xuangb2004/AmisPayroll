@@ -1,0 +1,326 @@
+/* Import Font Inter từ CDN của AMIS  */
+@import url('https://testcdnamisapp.misacdn.net/fonts/font.inter.css');
+
+:root {
+  --primary-color: #2ca01c; 
+  --primary-hover: #35bf22;
+  --text-color: #111111;
+  --text-secondary: #666666;
+  --border-color: #e0e0e0;
+  --bg-color: #f4f5f8;
+  --error-color: #e81e1e;
+  --white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  font-size: 13px; 
+}
+.misa-icon {
+  display: inline-block;
+  background-color: currentColor; 
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  color: #afb3c1;
+}
+
+.mi-ninedot-white {
+  width: 16px;
+  height: 16px;
+  background-color: #ffffff; 
+  -webkit-mask-image: url('https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg');
+  mask-image: url('https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg');
+  -webkit-mask-position: -62px -82px;
+  mask-position: -62px -82px;
+}
+.app_icon {
+  width: 16px;
+  height: 16px;
+  -webkit-mask-image: url('https://testcdnamisapp.misacdn.net/apps/payroll/static/logos/icon-payroll-logo.svg?v=1.0');
+  mask-image: url('https://testcdnamisapp.misacdn.net/apps/payroll/static/logos/icon-payroll-logo.svg?v=1.0');
+}
+.mi-search-white {
+    width: 20px;
+    height: 20px;
+    -webkit-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+    mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+    -webkit-mask-position: 0px 0px;
+    mask-position: 0px 0px;
+    background-color: #ffffffb3 !important;
+}
+.mi-setting-white {
+    width: 20px;
+    height: 20px;
+    -webkit-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    -webkit-mask-position: -362px -434px;
+    mask-position: -362px -434px;
+    background-color: #fff !important;
+}
+.agent-box #messagebox-ava-agent {
+    position: absolute;
+    top: 8px;
+    right: 15px;
+    background: url('https://testcdnamisapp.misacdn.net/apps/payroll/static/img/payroll_agent-d_2srbQV.png');
+    background-size: cover;
+    width: 25px;
+    height: 25px;
+}
+.agent-box {
+  position: relative; 
+  width: 40px; 
+  height: 40px;
+}
+#messagebox-ava-agent {
+    padding: 8px;
+}
+.mi-new-feature-white {
+    width: 21px;
+    height: 19px;
+    -webkit-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    maslk-position: -338px -435px;
+    -webkit-mask-position: -338px -435px;
+    background-color: #fff !important;
+}
+.misa-messbox-icon-message-light {
+    background-image: url("data:image/svg+xml,%3csvg%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M12%203C7.02944%203%203%207.02945%203%2012C3%2013.7499%203.49992%2015.3827%204.36396%2016.7645L3%2021L7.23545%2019.636C8.6173%2020.5001%2010.2501%2021%2012%2021C16.9706%2021%2021%2016.9706%2021%2012C21%207.02945%2016.9706%203%2012%203Z'%20fill='white'%20stroke='white'%20stroke-miterlimit='10'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M13.0986%2012.0001C13.0986%2012.6069%2012.6068%2013.0988%2012%2013.0988C11.3932%2013.0988%2010.9014%2012.6069%2010.9014%2012.0001C10.9014%2011.3934%2011.3932%2010.9015%2012%2010.9015C12.6068%2010.9015%2013.0986%2011.3934%2013.0986%2012.0001Z'%20fill='url(%23paint0_linear_5028_20497)'/%3e%3cpath%20d='M17.4932%2012.0001C17.4932%2012.6069%2017.0013%2013.0988%2016.3945%2013.0988C15.7878%2013.0988%2015.2959%2012.6069%2015.2959%2012.0001C15.2959%2011.3934%2015.7878%2010.9015%2016.3945%2010.9015C17.0013%2010.9015%2017.4932%2011.3934%2017.4932%2012.0001Z'%20fill='url(%23paint1_linear_5028_20497)'/%3e%3cpath%20d='M8.7041%2012.0001C8.7041%2012.6069%208.21222%2013.0988%207.60547%2013.0988C6.99872%2013.0988%206.50684%2012.6069%206.50684%2012.0001C6.50684%2011.3934%206.99872%2010.9015%207.60547%2010.9015C8.21222%2010.9015%208.7041%2011.3934%208.7041%2012.0001Z'%20fill='url(%23paint2_linear_5028_20497)'/%3e%3cdefs%3e%3clinearGradient%20id='paint0_linear_5028_20497'%20x1='12'%20y1='10.9015'%20x2='12'%20y2='13.0988'%20gradientUnits='userSpaceOnUse'%3e%3cstop%20stop-color='%235B7CFF'/%3e%3cstop%20offset='1'%20stop-color='%23214BF5'/%3e%3c/linearGradient%3e%3clinearGradient%20id='paint1_linear_5028_20497'%20x1='16.3945'%20y1='10.9015'%20x2='16.3945'%20y2='13.0988'%20gradientUnits='userSpaceOnUse'%3e%3cstop%20stop-color='%235B7CFF'/%3e%3cstop%20offset='1'%20stop-color='%23214BF5'/%3e%3c/linearGradient%3e%3clinearGradient%20id='paint2_linear_5028_20497'%20x1='7.60547'%20y1='10.9015'%20x2='7.60547'%20y2='13.0988'%20gradientUnits='userSpaceOnUse'%3e%3cstop%20stop-color='%235B7CFF'/%3e%3cstop%20offset='1'%20stop-color='%23214BF5'/%3e%3c/linearGradient%3e%3c/defs%3e%3c/svg%3e");
+    width: 24px;
+    height: 24px;
+    background-position: center;
+    background-size: 24px;
+    background-color: transparent !important;
+}
+.mnoti-selector-box {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+DQogIDxkZWZzPg0KICAgIDxjbGlwUGF0aCBpZD0iY2xpcC1wYXRoIj4NCiAgICAgIDxyZWN0IGlkPSJSZWN0YW5nbGVfMjIyMTUiIGRhdGEtbmFtZT0iUmVjdGFuZ2xlIDIyMjE1IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIGZpbGw9IiNmZmYiLz4NCiAgICA8L2NsaXBQYXRoPg0KICA8L2RlZnM+DQogIDxnIGlkPSJHcm91cF80NjI4NyIgZGF0YS1uYW1lPSJHcm91cCA0NjI4NyIgY2xpcC1wYXRoPSJ1cmwoI2NsaXAtcGF0aCkiPg0KICAgIDxwYXRoIGlkPSJQYXRoXzM2MjU3IiBkYXRhLW5hbWU9IlBhdGggMzYyNTciIGQ9Ik0xOCwxMS42VjkuM2E2LjE4NCw2LjE4NCwwLDAsMC01Ljg0Mi02LjI3NkE2LDYsMCwwLDAsNiw5LjAyNFYxMS42YzAsMi44MjgtMi41NzEsMy41MTQtMi41NzEsNS4xNDJDMy40MjksMTguMiw2Ljc3MSwxOS4zMSwxMiwxOS4zMXM4LjU3MS0xLjExNCw4LjU3MS0yLjU3MkMyMC41NzEsMTUuMTEsMTgsMTQuNDI0LDE4LDExLjZaIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS1saW5lY2FwPSJzcXVhcmUiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgc3Ryb2tlLXdpZHRoPSIyIi8+DQogICAgPHBhdGggaWQ9IlBhdGhfMzYyNTgiIGRhdGEtbmFtZT0iUGF0aCAzNjI1OCIgZD0iTTEyLDIxLjIyOHEtMS4yNSwwLTIuNS0uMDg3YTIuNjE4LDIuNjE4LDAsMCwwLDUsMFExMy4zMjUsMjEuMjI2LDEyLDIxLjIyOFoiIGZpbGw9IiNmZmZmZmYiLz4NCiAgPC9nPg0KPC9zdmc+DQo=");
+    background-color: transparent !important;
+    width: 24px;
+    height: 24px;
+  }
+.misa-helpmenu-trigger{
+  background-color: transparent !important;
+  width: 24px;
+  height: 24px;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCI+PGRlZnM+PGNsaXBQYXRoIGlkPSJhIj48cmVjdCB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQ0IDc5KSIgZmlsbD0iI2ZmZiIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKC00Njk5IC0xNzApIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NjU1IDkxKSIgY2xpcC1wYXRoPSJ1cmwoI2EpIj48cGF0aCBkPSJNNTMuNCw4OC4zMTVhMi42ODUsMi42ODUsMCwwLDEsNS4yMTguOUM1OC42MTMsOTEsNTYsOTEuOSw1Niw5MS45di45IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIxLjgiLz48cGF0aCBkPSJNNTYsMTAwYTksOSwwLDEsMC05LTksOSw5LDAsMCwwLDksOVoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNNTYsOTdhMSwxLDAsMSwwLTEtMUExLDEsMCwwLDAsNTYsOTdaIiBmaWxsPSIjZmZmIi8+PC9nPjwvZz48L3N2Zz4=");
+  }
+  .misa-knowledge-knowledge {
+    background-image: url("data:image/svg+xml,%3csvg%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M3%2010V21'%20stroke='%23FFAA2B'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M3%2010C3.06667%209.66667%203.56%209%205%209'%20stroke='%23FFAA2B'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M21%2010C20.9333%209.66667%2020.44%209%2019%209'%20stroke='%23FFAA2B'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M21%2010V21'%20stroke='%23FFAA2B'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M3%2021C4.36817%2020.21%205.92017%2019.7942%207.5%2019.7942C9.07983%2019.7942%2010.6318%2020.21%2012%2021C13.3682%2020.21%2014.9202%2019.7942%2016.5%2019.7942C18.0798%2019.7942%2019.6318%2020.21%2021%2021'%20stroke='%23FFAA2B'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M9.6%2012.0714C8.92838%2011.5767%208.43227%2010.887%208.18195%2010.0999C7.93163%209.31291%207.93978%208.46847%208.20526%207.68625C8.47075%206.90402%208.9801%206.22366%209.66116%205.74155C10.3422%205.25943%2011.1605%205%2012%205C12.8395%205%2013.6578%205.25943%2014.3388%205.74155C15.0199%206.22366%2015.5293%206.90402%2015.7947%207.68625C16.0602%208.46847%2016.0684%209.31291%2015.8181%2010.0999C15.5677%2010.887%2015.0716%2011.5767%2014.4%2012.0714C14.0877%2012.3751%2013.8525%2012.7467%2013.7135%2013.1562C13.5745%2013.5657%2013.5356%2014.0016%2013.6%2014.4286C13.6%2014.8453%2013.4314%2015.245%2013.1314%2015.5397C12.8313%2015.8344%2012.4243%2016%2012%2016C11.5757%2016%2011.1687%2015.8344%2010.8686%2015.5397C10.5686%2015.245%2010.4%2014.8453%2010.4%2014.4286C10.4644%2014.0016%2010.4255%2013.5657%2010.2865%2013.1562C10.1475%2012.7467%209.91235%2012.3751%209.6%2012.0714Z'%20stroke='%23FFAA2B'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M10.1602%2012.8572H13.8402'%20stroke='%23FFAA2B'%20stroke-width='1.5'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M12%202L12%201'%20stroke='%23FFAA2B'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M7%204L6.04499%203.70344'%20stroke='%23FFAA2B'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3cpath%20d='M16.9998%204L17.9548%203.70344'%20stroke='%23FFAA2B'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 24px;
+    height: 24px;
+    background-color: transparent !important;
+}
+.misa-moremenu {
+    background-image: url("data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20xmlns:xlink='http://www.w3.org/1999/xlink'%20width='24'%20height='24'%20viewBox='0%200%2024%2024'%3e%3cdefs%3e%3cclipPath%20id='a'%3e%3crect%20width='24'%20height='24'%20fill='%23fff'/%3e%3c/clipPath%3e%3c/defs%3e%3cg%20clip-path='url(%23a)'%3e%3cpath%20d='M12,21a9,9,0,1,0-9-9A9,9,0,0,0,12,21Z'%20fill='none'%20stroke='%23fff'%20stroke-linecap='round'%20stroke-linejoin='round'%20stroke-width='2'/%3e%3cpath%20d='M12,12v.01'%20fill='none'%20stroke='%23fff'%20stroke-linecap='round'%20stroke-linejoin='round'%20stroke-width='2'/%3e%3cpath%20d='M8,12v.01'%20fill='none'%20stroke='%23fff'%20stroke-linecap='round'%20stroke-linejoin='round'%20stroke-width='2'/%3e%3cpath%20d='M16,12v.01'%20fill='none'%20stroke='%23fff'%20stroke-linecap='round'%20stroke-linejoin='round'%20stroke-width='2'/%3e%3c/g%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 24px;
+    height: 24px;
+    background-color: transparent !important;
+}
+
+.mi-home {
+    width: 18px;
+    height: 18px;
+    -webkit-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    -moz-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    -ms-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    -o-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    -webkit-mask-position: -157px -357px;
+    -moz-mask-position: -157px -357px;
+    -ms-mask-position: -157px -357px;
+    -o-mask-position: -157px -357px;
+    mask-position: -157px -357px;
+    -webkit-mask-repeat: no-repeat;
+    -moz-mask-repeat: no-repeat;
+    -ms-mask-repeat: no-repeat;
+    -o-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+
+  .mi-salary-composition {
+    width: 18px;
+    height: 18px;
+    -webkit-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    mask-position: -277px -357px;
+    mask-repeat: no-repeat;
+    background-color: #00ab6b;;
+  }
+
+  .mi-payroll-template {
+    width: 18px;
+    height: 18px;
+    -webkit-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    mask-position: -258px -357px;
+    mask-repeat: no-repeat;
+  }
+  .mi-salary-data {
+    width: 18px;
+    height: 18px;
+    -webkit-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    -webkit-mask-position: -178px -357px;
+    mask-position: -179px -357px;
+    mask-repeat: no-repeat;
+}
+
+.mi-chevron-right {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-color: transparent !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 16px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+.mi-calculator {
+    width: 18px;
+    height: 18px;
+    -webkit-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    -webkit-mask-position: -197px -357px;
+    mask-position: -197px -357px;
+}
+.mi-money {
+    width: 18px;
+    height: 18px;
+    -webkit-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    -webkit-mask-position: -218px -357px;
+    mask-position: -218px -357px;
+}
+.mi-report {
+    width: 18px;
+    height: 18px;
+    -webkit-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_2-SCCnlDIQ.svg);
+    -webkit-mask-position: -238px -357px;
+    mask-position: -238px -357px;
+}
+.mi-arrow-left {
+    width: 16px;
+    height: 16px;
+    -webkit-mask-image: url("data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M10.8333%205.83334H17.5M10.8333%2014.1667H17.5M14.1667%2010H17.5M2.5%2010H10.8333M2.5%2010L6.25%2013.75M2.5%2010L6.25%206.25001'%20stroke='%23717680'%20stroke-width='1.5'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e");
+    mask-image: url("data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M10.8333%205.83334H17.5M10.8333%2014.1667H17.5M14.1667%2010H17.5M2.5%2010H10.8333M2.5%2010L6.25%2013.75M2.5%2010L6.25%206.25001'%20stroke='%23717680'%20stroke-width='1.5'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e");
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+.mi-arrow-right {
+    width: 16px;
+    height: 16px;
+    -webkit-mask-image: url("data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M10.8333%205.83334H17.5M10.8333%2014.1667H17.5M14.1667%2010H17.5M2.5%2010H10.8333M2.5%2010L6.25%2013.75M2.5%2010L6.25%206.25001'%20stroke='%23717680'%20stroke-width='1.5'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e");
+    mask-image: url("data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M10.8333%205.83334H17.5M10.8333%2014.1667H17.5M14.1667%2010H17.5M2.5%2010H10.8333M2.5%2010L6.25%2013.75M2.5%2010L6.25%206.25001'%20stroke='%23717680'%20stroke-width='1.5'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e");
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    transform: rotate(180deg)
+}
+.mi-rule {
+    width: 17px;
+    height: 17px;
+    -webkit-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+    mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+    -webkit-mask-position: -82px -101px;
+    mask-position: -82px -101px;
+    background-color: #6e737a !important;
+}
+.mi-chevron-down-white {
+    width: 12px;
+    height: 8px;
+    -webkit-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+    mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+    -webkit-mask-position: -124px -6px;
+    mask-position: -124px -6px;
+    mask-repeat: no-repeat;
+    background-color: #fff !important;
+}
+.mi-chevron-down {
+    width: 12px;
+    height: 12px;
+    -webkit-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+    mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+    -webkit-mask-position: -124px -6px;
+    mask-position: -124px -6px;
+    mask-repeat: no-repeat;
+
+}
+.mi-search {
+    width: 20px;
+    height: 20px;
+    -webkit-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+    mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+    -webkit-mask-position: 0px 0px;
+    mask-position: 0px 0px;
+    background-color: #6e737a !important;
+}
+
+.mi-filter {
+    width: 20px;
+    height: 20px;
+    -webkit-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+    mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+    mask-position: -22px 0;
+    mask-repeat: no-repeat;
+    background-color: #6e737a !important;
+}
+
+.mi-setting {
+    width: 22px;
+    height: 20px;
+    -webkit-mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+    mask-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg);
+    mask-position: -322px -81px;
+    mask-repeat: no-repeat;
+    background-color: #666 !important;
+}
+.mi-pencil {
+    width: 15px;
+    height: 15px;
+    -webkit-mask-image: url("https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg");
+    mask-image: url("https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg");
+    -webkit-mask-position: -82px -3px;
+    mask-position: -82px -3px;
+    mask-repeat: no-repeat;
+    background-color: #6e737a !important;
+}
+.mi-trash-red {
+    width: 20px;
+    height: 20px;
+    -webkit-mask-image: url("https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg");
+    mask-image: url("https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg");
+    -webkit-mask-position: -102px -21px;
+    mask-position: -102px -21px;
+    mask-repeat: no-repeat;
+    background-color: #ff6161 !important;
+}
+.mi-circle-check-green {
+    width: 20px;
+    height: 20px;
+    -webkit-mask-image: url("https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg");
+    mask-image: url("https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg");
+    -webkit-mask-position: -141px -41px;
+    mask-position: -141px -41px;
+    background-color: #25b973 !important;
+}
+.dx-datagrid {
+  font-family: "Inter", Helvetica, Arial, sans-serif;
+}

@@ -1,0 +1,15 @@
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Application\bin\Debug\net10.0\AmisPayroll.Application.deps.json
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Application\bin\Debug\net10.0\AmisPayroll.Application.dll
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Application\bin\Debug\net10.0\AmisPayroll.Application.pdb
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Application\bin\Debug\net10.0\AmisPayroll.Entities.dll
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Application\bin\Debug\net10.0\AmisPayroll.Entities.pdb
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Application\obj\Debug\net10.0\AmisPayroll.Application.csproj.AssemblyReference.cache
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Application\obj\Debug\net10.0\AmisPayroll.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Application\obj\Debug\net10.0\AmisPayroll.Application.AssemblyInfoInputs.cache
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Application\obj\Debug\net10.0\AmisPayroll.Application.AssemblyInfo.cs
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Application\obj\Debug\net10.0\AmisPayroll.Application.csproj.CoreCompileInputs.cache
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Application\obj\Debug\net10.0\AmisPayr.CE1BCE88.Up2Date
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Application\obj\Debug\net10.0\AmisPayroll.Application.dll
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Application\obj\Debug\net10.0\refint\AmisPayroll.Application.dll
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Application\obj\Debug\net10.0\AmisPayroll.Application.pdb
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Application\obj\Debug\net10.0\ref\AmisPayroll.Application.dll

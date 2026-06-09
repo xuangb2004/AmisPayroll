@@ -1,0 +1,11 @@
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Entities\bin\Debug\net10.0\AmisPayroll.Entities.deps.json
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Entities\bin\Debug\net10.0\AmisPayroll.Entities.dll
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Entities\bin\Debug\net10.0\AmisPayroll.Entities.pdb
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Entities\obj\Debug\net10.0\AmisPayroll.Entities.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Entities\obj\Debug\net10.0\AmisPayroll.Entities.AssemblyInfoInputs.cache
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Entities\obj\Debug\net10.0\AmisPayroll.Entities.AssemblyInfo.cs
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Entities\obj\Debug\net10.0\AmisPayroll.Entities.csproj.CoreCompileInputs.cache
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Entities\obj\Debug\net10.0\AmisPayroll.Entities.dll
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Entities\obj\Debug\net10.0\refint\AmisPayroll.Entities.dll
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Entities\obj\Debug\net10.0\AmisPayroll.Entities.pdb
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Entities\obj\Debug\net10.0\ref\AmisPayroll.Entities.dll

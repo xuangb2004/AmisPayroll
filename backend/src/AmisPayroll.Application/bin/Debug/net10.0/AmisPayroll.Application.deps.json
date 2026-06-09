@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "AmisPayroll.Application/1.0.0": {
+        "dependencies": {
+          "AmisPayroll.Entities": "1.0.0"
+        },
+        "runtime": {
+          "AmisPayroll.Application.dll": {}
+        }
+      },
+      "AmisPayroll.Entities/1.0.0": {
+        "runtime": {
+          "AmisPayroll.Entities.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "AmisPayroll.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AmisPayroll.Entities/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

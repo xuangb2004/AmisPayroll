@@ -1,0 +1,17 @@
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\bin\Debug\net10.0\AmisPayroll.Infrastructure.deps.json
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\bin\Debug\net10.0\AmisPayroll.Infrastructure.dll
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\bin\Debug\net10.0\AmisPayroll.Infrastructure.pdb
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\bin\Debug\net10.0\AmisPayroll.Application.dll
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\bin\Debug\net10.0\AmisPayroll.Entities.dll
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\bin\Debug\net10.0\AmisPayroll.Application.pdb
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\bin\Debug\net10.0\AmisPayroll.Entities.pdb
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\obj\Debug\net10.0\AmisPayroll.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\obj\Debug\net10.0\AmisPayroll.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\obj\Debug\net10.0\AmisPayroll.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\obj\Debug\net10.0\AmisPayroll.Infrastructure.AssemblyInfo.cs
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\obj\Debug\net10.0\AmisPayroll.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\obj\Debug\net10.0\AmisPayr.76FD2F3F.Up2Date
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\obj\Debug\net10.0\AmisPayroll.Infrastructure.dll
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\obj\Debug\net10.0\refint\AmisPayroll.Infrastructure.dll
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\obj\Debug\net10.0\AmisPayroll.Infrastructure.pdb
+C:\Users\HP\Documents\AmisPayroll\backend\src\AmisPayroll.Infrastructure\obj\Debug\net10.0\ref\AmisPayroll.Infrastructure.dll
