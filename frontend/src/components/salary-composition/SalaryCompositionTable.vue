@@ -85,21 +85,28 @@
 
       <DxColumn data-field="compositionCode" caption="Mã thành phần" width="130" />
       <DxColumn data-field="compositionName" caption="Tên thành phần" min-width="200" /> 
-      <DxColumn data-field="applicableUnit" caption="Đơn vị áp dụng" width="180" />
-      <DxColumn data-field="compositionType" caption="Loại thành phần" width="150" />
-      <DxColumn data-field="property" caption="Tính chất" width="120" />
-      <DxColumn data-field="valueType" caption="Kiểu giá trị" width="120" />
-      <DxColumn data-field="value" caption="Giá trị" width="120" />
-      <DxColumn data-field="createdSource" caption="Nguồn tạo" width="120" />
+      
+      <DxColumn data-field="organizationId" caption="Đơn vị áp dụng" width="180" cell-template="unitTemplate" />
+      <template #unitTemplate="{ data }">
+        <span>{{ getUnitName(data.value) }}</span>
+      </template>
+
+      <DxColumn data-field="compositionType" caption="Loại thành phần" width="150" :customize-text="formatType" />
+      <DxColumn data-field="compositionNature" caption="Tính chất" width="120" :customize-text="formatNature" />
+      <DxColumn data-field="valueType" caption="Kiểu giá trị" width="120" :customize-text="formatValueType" />
+      
+      <DxColumn data-field="amount" caption="Giá trị" width="120" />
+      <DxColumn data-field="sourceType" caption="Nguồn tạo" width="120" :customize-text="formatSource" />
+      
       <DxColumn data-field="status" caption="Trạng thái" width="130" cell-template="statusTemplate" />
       <template #statusTemplate="{ data }">
-        <div v-if="data.value === 'Đang theo dõi' || data.data.status === 'Đang theo dõi'" class="status-badge status-tracking">
+        <div v-if="data.value === 1" class="status-badge status-tracking">
           <div class="status-dot"></div> 
-          <span>{{ data.value }}</span>
+          <span>Đang theo dõi</span>
         </div>
-        <div v-else class="status-badge status-stopped">
+        <div v-else-if="data.value === 2" class="status-badge status-stopped">
           <div class="status-dot"></div>
-          <span>{{ data.value }}</span>
+          <span>Ngừng theo dõi</span>
         </div>
       </template>
 
@@ -110,12 +117,23 @@
       />
       <template #actionTemplate="{ data }">
         <div class="row-actions">
+          
           <button 
-            v-if="data.data.status === 'Đang theo dõi'" 
+            v-if="data.data.status === 1 || data.data.Status === 1" 
             class="action-btn btn-warning" 
             title="Ngừng theo dõi"
+            @click="handleUpdateStatusSingle(data.key, 2, data.data)" 
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+          </button>
+
+          <button 
+            v-if="data.data.status === 2 || data.data.Status === 2" 
+            class="action-btn" style="color: #00ab6b;"
+            title="Tiếp tục theo dõi"
+            @click="handleUpdateStatusSingle(data.key, 1, data.data)"
+          >
+            <i class="misa-icon mi-circle-check-green"></i>
           </button>
 
           <button class="action-btn btn-normal" title="Nhân bản">
@@ -126,7 +144,7 @@
             <i class="misa-icon mi-pencil"></i>
           </button>
           
-          <button class="action-btn btn-danger" title="Xóa" @click="handleDeleteSingle(data.data.compositionId)">
+          <button class="action-btn btn-danger" title="Xóa" @click="handleDeleteSingle(data.key)">
             <i class="misa-icon mi-trash-red"></i>
           </button>
         </div>
@@ -283,13 +301,43 @@ const handleDeleteSingle = async (compositionId) => {
   }
 };
 
-const handleUpdateStatusSingle = async (componentCode, newStatus) => {
+const handleUpdateStatusSingle = async (compositionId, newStatus, rowData) => {
   try {
-    await axios.put(`${API_URL}/${componentCode}/Status`, { Status: newStatus });
-    notify(`Đã chuyển sang trạng thái: ${newStatus}`, "success", 3000);
+    const updatedPayload = {
+      OrganizationId: rowData.organizationId || rowData.OrganizationId,
+      CompositionCode: rowData.compositionCode || rowData.CompositionCode,
+      CompositionName: rowData.compositionName || rowData.CompositionName,
+      CompositionType: rowData.compositionType || rowData.CompositionType,
+      CompositionNature: rowData.compositionNature || rowData.CompositionNature,
+      TaxNature: rowData.taxNature || rowData.TaxNature || null,
+      NormFormula: rowData.normFormula || rowData.NormFormula || "",
+      IsAllowExceedNorm: rowData.isAllowExceedNorm || rowData.IsAllowExceedNorm || 0,
+      ValueType: rowData.valueType || rowData.ValueType,
+      Amount: rowData.amount || rowData.Amount || 0,
+      CalculationFormula: rowData.calculationFormula || rowData.CalculationFormula || "",
+      Description: rowData.description || rowData.Description || "",
+      IsDisplayOnPayslip: rowData.isDisplayOnPayslip || rowData.IsDisplayOnPayslip || 0,
+      SourceType: rowData.sourceType || rowData.SourceType,
+      
+      Status: newStatus
+    };
+
+    await axios.put(`${API_URL}/${compositionId}`, updatedPayload);
+    
+    const statusText = newStatus === 1 ? 'Đang theo dõi' : 'Ngừng theo dõi';
+    notify(`Đã chuyển sang trạng thái: ${statusText}`, "success", 3000);
+    
     if(dataGridRef.value) dataGridRef.value.instance.refresh();
+
   } catch (error) {
     notify("Lỗi khi cập nhật trạng thái", "error", 3000);
+    
+    if (error.response && error.response.data && error.response.data.errors) {
+      console.error(" Chi tiết các trường bị lỗi Validation từ C#:", error.response.data.errors);
+      alert("Lỗi 400: Sai dữ liệu. Vui lòng mở Console (F12) để xem chi tiết!");
+    } else {
+      console.error("Lỗi:", error);
+    }
   }
 };
 
@@ -375,6 +423,44 @@ const loadData = () => {
 defineExpose({ 
   loadData 
 });
+// ==========================================
+// HÀM FORMAT DỮ LIỆU TỪ SỐ (DB) SANG CHỮ (UI)
+// ==========================================
+
+const formatType = (cellInfo) => {
+  if (cellInfo.value === 1) return 'Lương';
+  if (cellInfo.value === 2) return 'Phụ cấp';
+  if (cellInfo.value === 3) return 'Phúc lợi';
+  return cellInfo.valueText;
+};
+
+const formatNature = (cellInfo) => {
+  if (cellInfo.value === 1) return 'Thu nhập';
+  if (cellInfo.value === 2) return 'Khấu trừ';
+  if (cellInfo.value === 3) return 'Khác';
+  return cellInfo.valueText;
+};
+
+// 3. Format Kiểu giá trị
+const formatValueType = (cellInfo) => {
+  if (cellInfo.value === 1) return 'Tiền tệ';
+  if (cellInfo.value === 2) return 'Phần trăm';
+  if (cellInfo.value === 3) return 'Hệ số';
+  return cellInfo.valueText;
+};
+
+// 4. Format Nguồn tạo
+const formatSource = (cellInfo) => {
+  if (cellInfo.value === 1) return 'Hệ thống';
+  if (cellInfo.value === 2) return 'Tự thêm';
+  return cellInfo.valueText;
+};
+
+const getUnitName = (id) => {
+  if (!id) return '';
+  if (id === '11111111-1111-1111-1111-111111111111') return 'Công ty Tổng Test';
+  return 'Tất cả đơn vị'; 
+};
 </script>
 
 <style scoped>
