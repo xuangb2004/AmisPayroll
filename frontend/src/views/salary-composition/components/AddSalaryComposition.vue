@@ -301,12 +301,10 @@ const unitData = ref([]);
 
 const fetchUnits = async () => {
   try {
-    // DỮ LIỆU GIẢ LẬP ĐỂ TEST
     unitData.value = [
-      { id: '1', name: 'Thi công', parentId: null },
-      { id: '2', name: 'Phòng Kinh doanh', parentId: null },
-      { id: '2_1', name: 'Sản xuất 1', parentId: '2' },
-      { id: '2_2', name: 'Nguyên liệu 1', parentId: '2' },
+      { id: '11111111-1111-1111-1111-111111111111', name: 'Công ty Tổng', parentId: null },
+      { id: '22222222-2222-2222-2222-222222222222', name: 'Phòng Kinh Doanh', parentId: '11111111-1111-1111-1111-111111111111' },
+      { id: '33333333-3333-3333-3333-333333333333', name: 'Phòng Kỹ Thuật', parentId: '11111111-1111-1111-1111-111111111111' },
     ];
   } catch (error) {
     console.error("Lỗi khi tải danh sách phòng ban:", error);
@@ -357,50 +355,49 @@ const save = async () => {
   try {
     // 1. ÁNH XẠ DỮ LIỆU TỪ FORM VUE SANG DTO CỦA C#
     
-    // Map CompositionType (Giả sử: 1 = Lương, 2 = Phụ cấp, 3 = Phúc lợi)
     let typeInt = 1;
     if (form.value.type === 'Phụ cấp') typeInt = 2;
     if (form.value.type === 'Phúc lợi') typeInt = 3;
-
-    // Map CompositionNature (Theo DB: 1 = Thu nhập, 2 = Khấu trừ, 3 = Khác)
+    let taxNatureInt = null;
+    if (form.value.nature === 'Thu nhập') {
+    if (form.value.taxOption === 'Chịu thuế') taxNatureInt = 1;
+    if (form.value.taxOption === 'Miễn thuế toàn phần') taxNatureInt = 2;
+    if (form.value.taxOption === 'Miễn thuế một phần') taxNatureInt = 3;
+    }
     let natureInt = 1;
     if (form.value.nature === 'Khấu trừ') natureInt = 2;
     if (form.value.nature === 'Khác') natureInt = 3;
 
-    // Map ValueType (Giả sử: 1 = Tiền tệ, 2 = Phần trăm, 3 = Hệ số)
     let valueTypeInt = 1;
     if (form.value.valueType === 'Phần trăm') valueTypeInt = 2;
     if (form.value.valueType === 'Hệ số') valueTypeInt = 3;
 
-    // Map Hiển thị phiếu lương (Có = 1, Không = 0)
     let isDisplay = form.value.showOnPayslip === 'Có' ? 1 : 0;
     
-    // Map Cho phép vượt định mức
     let allowExceed = form.value.allowExceedNorm ? 1 : 0;
 
-    // 2. TẠO PAYLOAD ĐÚNG CHUẨN CreateSalaryCompositionDto.cs
     const payload = {
-      // TẠM THỜI lấy ID đơn vị đầu tiên trong mảng để test API (Cần bạn quyết định logic Vấn đề 1)
-      OrganizationId: form.value.units.length > 0 ? form.value.units[0] : null, 
+      OrganizationId: form.value.units.length > 0 ? form.value.units[0] : '00000000-0000-0000-0000-000000000000', 
       
       CompositionCode: form.value.code,
       CompositionName: form.value.name,
       CompositionType: typeInt,
       CompositionNature: natureInt,
-      TaxNature: null, // Bổ sung logic map Tax nếu cần
-      NormFormula: form.value.norm,
+      TaxNature: taxNatureInt, 
+      NormFormula: form.value.norm || "",
       IsAllowExceedNorm: allowExceed,
       ValueType: valueTypeInt,
       Amount: form.value.valueOption === 1 ? (Number(form.value.valueInput) || 0) : 0,
       CalculationFormula: form.value.valueOption === 2 ? form.value.customFormula : null,
       Description: form.value.description,
-      IsDisplayOnPayslip: isDisplay
+      IsDisplayOnPayslip: isDisplay,
+      SourceType: 2, 
+      Status: 1      
     };
 
     console.log("Payload gửi lên C#:", payload);
 
     // 3. GỌI AXIOS
-    // Đã đổi port theo file launchSettings.json của bạn (http://localhost:5094)
     await axios.post('http://localhost:5094/api/v1/SalaryCompositions', payload);
     
     console.log("Đã lưu vào DB thành công!");
@@ -408,9 +405,9 @@ const save = async () => {
 
   } catch (error) {
     console.error("Lỗi kết nối API:", error);
-    if (error.response) {
-      // In ra lỗi cụ thể từ C# (Ví dụ: Lỗi validation 400 Bad Request)
-      console.error("Chi tiết lỗi từ C#:", error.response.data);
+    if (error.response && error.response.data && error.response.data.errors) {
+      console.error("Các trường bị lỗi Validation từ C#:", error.response.data.errors);
+      alert("Lỗi dữ liệu: Vui lòng kiểm tra Console (F12) để xem chi tiết trường bị sai!");
     }
   }
 };
