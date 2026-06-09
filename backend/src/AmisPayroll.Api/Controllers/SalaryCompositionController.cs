@@ -1,17 +1,46 @@
-using AmisPayroll.Api.Controllers.Base;
+using AmisPayroll.Application.DTOs;
 using AmisPayroll.Application.DTOs.SalaryComposition;
 using AmisPayroll.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace AmisPayroll.Api.Controllers
 {
-    public class SalaryCompositionsController : BaseController<SalaryCompositionDto, CreateSalaryCompositionDto, UpdateSalaryCompositionDto>
+    [ApiController]
+    [Route("api/v1/[controller]s")]
+    public class SalaryCompositionController : ControllerBase
     {
-        private readonly ISalaryCompositionService _salaryService;
+        private readonly ISalaryCompositionService _salaryCompositionService;
 
-        public SalaryCompositionsController(ISalaryCompositionService salaryService) : base(salaryService)
+        public SalaryCompositionController(ISalaryCompositionService salaryCompositionService)
         {
-            _salaryService = salaryService;
+            _salaryCompositionService = salaryCompositionService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPaging([FromQuery] int skip = 0, [FromQuery] int take = 15, [FromQuery] string? searchValue = null)
+        {
+            var (data, totalRecord) = await _salaryCompositionService.GetPagingAsync(skip, take, searchValue);
+            
+            return Ok(new
+            {
+                data = data,
+                totalRecord = totalRecord
+            });
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateSalaryCompositionDto dto)
+        {
+            var result = await _salaryCompositionService.UpdateAsync(id, dto);
+
+            return Ok(new
+            {
+                Success = true,
+                Data = result,
+                Message = "Cập nhật thành công."
+            });
         }
     }
 }

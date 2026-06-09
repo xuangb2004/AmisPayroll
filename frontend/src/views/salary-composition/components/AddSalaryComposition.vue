@@ -54,7 +54,7 @@
                 </span>
               </div>
               
-              <div class="mi-chevron-down Express-dropdown-arrow"></div>
+              <div class="misa-dropdown-arrow"></div>
             </div>
           </template>
 
@@ -84,7 +84,8 @@
         <DxSelectBox 
           v-model="form.type" 
           :data-source="['Lương', 'Phụ cấp', 'Phúc lợi']" 
-          class="misa-selectbox"
+          placeholder=""
+          class="misa-selectbox type-select"
         />
       </div>
     </div>
@@ -322,6 +323,7 @@ const onUnitSelectionChanged = (e) => {
   
   if (form.value.units.length > 0) {
     errors.value.units = false;
+    isUnitDropdownOpen.value = false;
   }
 };
 
@@ -488,12 +490,6 @@ defineExpose({
 .tag-remove { font-size: 14px; color: #666; cursor: pointer; font-weight: bold; margin-left: 2px; padding: 0 2px; }
 .tag-remove:hover { color: #e74c3c; }
 
-.custom-tag-field::after {
-  content: ""; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-  border: 5px solid transparent; border-top-color: #666; margin-top: 3px;
-}
-
-
 /* Giao diện list và tree khi chọn */
 :deep(.misa-selectbox .dx-list-item.dx-state-hover),
 :deep(.misa-treeview .dx-treeview-node.dx-state-hover) { background-color: #f4f5f8 !important; }
@@ -505,6 +501,8 @@ defineExpose({
 
 /* Radio và Checkbox */
 .nature-group { display: flex; gap: 16px; align-items: center; }
+.type-select { width: 250px; }
+.type-select :deep(.dx-placeholder) { display: none; }
 .nature-select { width: 250px; flex-shrink: 0; }
 .dynamic-options { flex: 1; padding-left: 8px; }
 .inline-radios { display: flex; gap: 20px; align-items: center; }

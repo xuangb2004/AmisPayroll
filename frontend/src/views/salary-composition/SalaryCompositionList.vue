@@ -25,7 +25,7 @@
     <template v-else>
       <div class="add-page-header">
         <div class="header-left">
-          <button class="btn-icon-back" @click="closeAddForm">
+          <button class="btn-icon-back" @click="requestCloseAddForm" aria-label="Thoát thêm thành phần">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           </button>
           <h1 class="add-page-title">Thêm thành phần</h1>
@@ -35,19 +35,31 @@
       <div class="add-page-content">
         <AddSalaryComposition 
           ref="formRef" 
-          @close="closeAddForm" 
+          @close="requestCloseAddForm" 
           @save-success="handleSaveSuccess"
         />
       </div>
 
       <div class="add-page-footer">
-        <button class="btn-cancel" @click="closeAddForm">Hủy bỏ</button>
+        <button class="btn-cancel" @click="requestCloseAddForm">Hủy bỏ</button>
         <div class="footer-right">
           <button class="btn-outline-primary" @click="triggerSaveAndAdd">Lưu và thêm</button>
           <button class="btn-primary" @click="triggerSave">Lưu</button>
         </div>
       </div>
     </template>
+
+    <div v-if="isExitConfirmVisible" class="exit-confirm-overlay" @click.self="stayOnAddForm">
+      <div class="exit-confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="exit-confirm-title">
+        <button class="exit-confirm-close" @click="stayOnAddForm" aria-label="Đóng">×</button>
+        <h2 id="exit-confirm-title">Thoát và không lưu?</h2>
+        <p>Nếu bạn thoát, các dữ liệu đang nhập liệu sẽ không được lưu lại.</p>
+        <div class="exit-confirm-actions">
+          <button class="btn-stay" @click="stayOnAddForm">Ở lại</button>
+          <button class="btn-exit" @click="closeAddForm">Thoát, không lưu</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -57,11 +69,17 @@ import SalaryCompositionTable from '../../components/salary-composition/SalaryCo
 import AddSalaryComposition from './components/AddSalaryComposition.vue';
 
 const isAddingNew = ref(false);
+const isExitConfirmVisible = ref(false);
 const formRef = ref(null);
 const tableRef = ref(null); // BỔ SUNG: Tham chiếu đến bảng
 
 const openAddForm = () => { isAddingNew.value = true; };
-const closeAddForm = () => { isAddingNew.value = false; };
+const requestCloseAddForm = () => { isExitConfirmVisible.value = true; };
+const stayOnAddForm = () => { isExitConfirmVisible.value = false; };
+const closeAddForm = () => {
+  isExitConfirmVisible.value = false;
+  isAddingNew.value = false;
+};
 
 const triggerSave = () => { if (formRef.value) formRef.value.save(); };
 const triggerSaveAndAdd = () => { if (formRef.value) formRef.value.saveAndAdd(); };
@@ -100,11 +118,12 @@ const handleSaveSuccess = (newData) => {
 .add-page-header { padding: 16px 0; flex-shrink: 0; }
 .header-left { display: flex; align-items: center; }
 .btn-icon-back {
-  background-color: #e1e4e6; border: none; cursor: pointer;
+  background-color: transparent; border: none; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  width: 32px; height: 32px; border-radius: 50%; margin-right: 16px;
+  width: 24px; height: 24px; border-radius: 0; margin-right: 12px;
+  padding: 0;
 }
-.btn-icon-back:hover { background-color: #d1d4d6; }
+.btn-icon-back:hover svg { stroke: #111111; }
 .add-page-title { font-size: 20px; font-weight: 700; color: #111; }
 
 .add-page-content { flex: 1; overflow-y: auto; }
@@ -158,4 +177,96 @@ const handleSaveSuccess = (newData) => {
   color: #111; font-weight: 500;
 }
 .btn-outline:hover { background: #f4f5f8; }
+
+.exit-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 120px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.exit-confirm-dialog {
+  position: relative;
+  width: 320px;
+  min-height: 124px;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  color: #111111;
+}
+
+.exit-confirm-dialog h2 {
+  margin: 0 28px 10px 0;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 700;
+}
+
+.exit-confirm-dialog p {
+  margin: 0;
+  color: #111111;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.exit-confirm-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: #666666;
+  font-size: 20px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.exit-confirm-close:hover {
+  color: #111111;
+}
+
+.exit-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.btn-stay,
+.btn-exit {
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-stay {
+  background: #ffffff;
+  color: #111111;
+  border: 1px solid #d9d9d9;
+}
+
+.btn-stay:hover {
+  background: #f4f5f8;
+}
+
+.btn-exit {
+  background: #00ab6b;
+  color: #ffffff;
+  border: 1px solid #00ab6b;
+}
+
+.btn-exit:hover {
+  background: #00995f;
+  border-color: #00995f;
+}
 </style>

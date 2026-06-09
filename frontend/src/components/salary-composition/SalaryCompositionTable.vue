@@ -669,7 +669,7 @@ const getUnitName = (id) => {
    ========================================== */
 .status-badge { display: flex; align-items: center; gap: 6px; }
 .status-tracking { padding: 2px 8px; border: 1px solid #00ab6b; border-radius: 8px; background-color: #e5f6ed; color: #00ab6b; font-weight: 500; }
-.status-stopped { padding: 2px 8px; border: 1px solid #f39c12; border-radius: 8px; background-color: #fdf2e9; color: #f39c12; font-weight: 500; }
+.status-stopped { padding: -1px 8px; border: 1px solid #f39c12; border-radius: 8px; background-color: #fdf2e9; color: #f39c12; font-weight: 500; }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .status-tracking .status-dot { background-color: #00ab6b; }
 .status-stopped .status-dot { background-color: #f39c12; }
