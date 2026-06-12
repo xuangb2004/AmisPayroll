@@ -171,17 +171,10 @@
     </DxDataGrid>
 
     <div class="misa-empty-state" v-if="totalRecords === 0 && !isLoading">
-      <svg width="132" height="100" viewBox="0 0 132 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M124.6 69.2C124.6 84.6639 112.064 97.2 96.6 97.2H35.4C19.936 97.2 7.4 84.6639 7.4 69.2V43.8C7.4 28.336 19.936 15.8 35.4 15.8H96.6C112.064 15.8 124.6 28.336 124.6 43.8V69.2Z" fill="#F4F5F8"/>
-        <path d="M66 2.8C71.5228 2.8 76 7.27715 76 12.8V35.8H56V12.8C56 7.27715 60.4772 2.8 66 2.8Z" fill="#E2E4E9"/>
-        <path d="M96 25H36C32.134 25 29 28.134 29 32V68C29 71.866 32.134 75 36 75H96C99.866 75 103 71.866 103 68V32C103 28.134 99.866 25 96 25Z" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="2"/>
-        <path d="M46 41H86M46 51H86M46 61H66" stroke="#D9D9D9" stroke-width="2" stroke-linecap="round"/>
-        <circle cx="82" cy="62" r="14" fill="#00AB6B"/>
-        <path d="M78 62L81 65L87 59" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+      <i class="ms-table__icon_nodata"></i>
       <span>Không có dữ liệu</span>
     </div>
-  </div>
+
 
   <div class="misa-pagination">
     <div class="pagination-left">
@@ -219,6 +212,7 @@
         </button>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -285,7 +279,7 @@ const dataSource = new CustomStore({
       console.error("Lỗi khi load dữ liệu:", error);
       throw 'Data Loading Error';
     } finally {
-      isLoading.value = false; // Luôn tắt loading sau khi lấy data xong
+      isLoading.value = false; 
     }
   },
 
@@ -308,7 +302,6 @@ const handleSearchInput = () => {
     const keyword = searchText.value.trim();
     if (keyword.length > 0) {
       try {
-        // Chỉ lấy 5 gợi ý nhẹ nhàng
         const response = await axios.get(`${API_URL}?skip=0&take=5&searchValue=${keyword}`);
         searchSuggestions.value = response.data.data || [];
         isSearchDropdownOpen.value = true;
@@ -566,27 +559,35 @@ const getUnitName = (id) => id === '11111111-1111-1111-1111-111111111111' ? 'Cô
   position: absolute;
   top: 50px; 
   left: 0;
-  width: 100%;
-  height: calc(100% - 50px);
+  right: 0;  
+  bottom: 0; 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff; 
+  
+  background-color: transparent; 
+  
+
+  pointer-events: none; 
+  
   z-index: 5;
 }
 
-.misa-empty-state svg {
-  margin-bottom: 16px;
-}
+
 
 .misa-empty-state span {
   color: #666666;
   font-size: 13px;
+  font-weight: 550;
+  font-family: inherit;
+  margin-top: 16px;
+  pointer-events: auto; 
+  user-select: text;
 }
 
 :deep(.dx-datagrid-nodata) {
-  display: none !important; /* Xóa chữ "No data" xấu xí mặc định */
+  display: none !important; 
 }
 
 
@@ -779,6 +780,34 @@ const getUnitName = (id) => id === '11111111-1111-1111-1111-111111111111' ? 'Cô
 .nav-btn {
   display: flex; justify-content: center; align-items: center; width: 24px; height: 24px; 
   background: none; border: none; border-radius: 4px; cursor: pointer; color: #666666; transition: all 0.2s;
+}
+/* ==========================================
+   TÙY CHỈNH MÀU NỀN KHI BÔI ĐEN VĂN BẢN
+   ========================================== */
+   :deep(.dx-datagrid) *,
+:deep(.dx-datagrid-content) * {
+  -webkit-user-select: text !important; 
+  -moz-user-select: text !important;    
+  user-select: text !important;         
+}
+::selection {
+  background-color: #00ab6b !important; 
+  color: #ffffff !important;            
+}
+
+::-moz-selection {
+  background-color: #00ab6b !important;
+  color: #ffffff !important;
+}
+
+:deep(::selection) {
+  background-color: #00ab6b !important;
+  color: #ffffff !important;
+}
+
+:deep(::-moz-selection) {
+  background-color: #00ab6b !important;
+  color: #ffffff !important;
 }
 .nav-btn:not(:disabled):hover { background-color: #f4f5f8; color: #111111; }
 .nav-btn:disabled { color: #cccccc; cursor: not-allowed; }

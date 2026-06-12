@@ -79,7 +79,7 @@ const toggleSidebar = () => {
 .menu-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
   padding: 8px;
 }
 

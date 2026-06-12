@@ -1,19 +1,18 @@
+using AmisPayroll.Api.Controllers.Base;
 using AmisPayroll.Application.DTOs;
-using AmisPayroll.Application.DTOs.SalaryComposition;
 using AmisPayroll.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using AmisPayroll.Application.DTOs.SalaryComposition;
 using System.Threading.Tasks;
 
 namespace AmisPayroll.Api.Controllers
 {
-    [ApiController]
-    [Route("api/v1/[controller]s")]
-    public class SalaryCompositionController : ControllerBase
+    public class SalaryCompositionController : BaseController<SalaryCompositionDto, CreateSalaryCompositionDto, UpdateSalaryCompositionDto>
     {
         private readonly ISalaryCompositionService _salaryCompositionService;
 
-        public SalaryCompositionController(ISalaryCompositionService salaryCompositionService)
+        public SalaryCompositionController(ISalaryCompositionService salaryCompositionService) 
+            : base(salaryCompositionService)
         {
             _salaryCompositionService = salaryCompositionService;
         }
@@ -29,18 +28,6 @@ namespace AmisPayroll.Api.Controllers
                 totalRecord = totalRecord
             });
         }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateSalaryCompositionDto dto)
-        {
-            var result = await _salaryCompositionService.UpdateAsync(id, dto);
-
-            return Ok(new
-            {
-                Success = true,
-                Data = result,
-                Message = "Cập nhật thành công."
-            });
-        }
+        
     }
 }

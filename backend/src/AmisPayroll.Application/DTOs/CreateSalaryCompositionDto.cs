@@ -6,8 +6,8 @@ namespace AmisPayroll.Application.DTOs.SalaryComposition
     public class CreateSalaryCompositionDto
     {
         public Guid OrganizationId { get; set; }
-        public string CompositionCode { get; set; }
-        public string CompositionName { get; set; }
+        public string CompositionCode { get; set; } = string.Empty;
+        public string CompositionName { get; set; } = string.Empty;
         public int CompositionType { get; set; }
         public CompositionNature CompositionNature { get; set; }
         public TaxNature? TaxNature { get; set; }

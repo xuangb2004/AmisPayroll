@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AmisPayroll.Entities.Entities;
+using AmisPayroll.Application.DTOs.SalaryComposition;
+using AmisPayroll.Application.DTOs;
 
 namespace AmisPayroll.Application.Interfaces.Repositories
 {
@@ -9,7 +11,6 @@ namespace AmisPayroll.Application.Interfaces.Repositories
     {
         Task<bool> CheckDuplicateCodeAsync(string code);
         Task<bool> CheckDuplicateCodeAsync(string code, Guid excludeId);
-
-        Task<(IEnumerable<dynamic> Data, int TotalCount)> GetPagingAsync(int skip, int take, string? searchValue);
+        Task<(IEnumerable<SalaryCompositionDto> Data, int TotalRecord)> GetPagingAsync(int skip, int take, string? searchValue);
     }
 }

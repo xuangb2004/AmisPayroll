@@ -321,6 +321,14 @@ body {
     mask-position: -142.4px -40px;
     background-color: #25b973 !important;
 }
+.ms-table__icon_nodata {
+    display: inline-block;
+    background-image: url(https://testcdnamisapp.misacdn.net/apps/payroll/static/img/EmptyState-hFasANEP.svg);
+    background-repeat: no-repeat;
+    width: 195px;
+    height: 133px;
+    background-position: -152px -3046px;
+}
 .dx-datagrid {
   font-family: "Inter", Helvetica, Arial, sans-serif;
 }
