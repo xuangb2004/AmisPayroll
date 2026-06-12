@@ -313,12 +313,12 @@ body {
     background-color: #ff6161 !important;
 }
 .mi-circle-check-green {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 21px;
     -webkit-mask-image: url("https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg");
     mask-image: url("https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg");
-    -webkit-mask-position: -141px -41px;
-    mask-position: -141px -41px;
+    -webkit-mask-position: -143px -41px;
+    mask-position: -142.4px -40px;
     background-color: #25b973 !important;
 }
 .dx-datagrid {

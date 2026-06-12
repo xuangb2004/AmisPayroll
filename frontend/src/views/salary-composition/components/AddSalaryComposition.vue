@@ -83,6 +83,8 @@
       <div class="form-control">
         <DxSelectBox 
           v-model="form.type" 
+          v-model:opened="isTypeOpen"
+          :class="{ 'is-opened': isTypeOpen }"
           :data-source="['Lương', 'Phụ cấp', 'Phúc lợi']" 
           placeholder=""
           class="misa-selectbox type-select"
@@ -95,6 +97,8 @@
       <div class="form-control nature-group">
         <DxSelectBox 
           v-model="form.nature" 
+          v-model:opened="isNatureOpen"
+          :class="{ 'is-opened': isNatureOpen }"
           :data-source="['Thu nhập', 'Khấu trừ', 'Khác']" 
           class="misa-selectbox nature-select"
         />
@@ -139,7 +143,13 @@
     <div class="form-row mt-2">
       <div class="form-label">Kiểu giá trị</div>
       <div class="form-control">
-        <DxSelectBox v-model="form.valueType" :data-source="['Tiền tệ', 'Phần trăm', 'Hệ số']" />
+        <DxSelectBox 
+          v-model="form.valueType" 
+          v-model:opened="isValueTypeOpen"
+          :class="{ 'is-opened': isValueTypeOpen }"
+          :data-source="['Tiền tệ', 'Phần trăm', 'Hệ số']" 
+          class="misa-selectbox"
+        />
       </div>
     </div>
 
@@ -153,7 +163,14 @@
           </label>
           <div class="indent-block" v-if="form.valueOption === 1">
             <div style="display: flex; align-items: center; gap: 8px;">
-              <DxSelectBox :data-source="['Trong cùng đơn vị công tác', 'Khác']" v-model="form.valueScope" width="220"/>
+              <DxSelectBox 
+                v-model="form.valueScope"
+                v-model:opened="isValueScopeOpen"
+                :class="{ 'is-opened': isValueScopeOpen }"
+                :data-source="['Trong cùng đơn vị công tác', 'Khác']" 
+                width="220"
+                class="misa-selectbox"
+              />
               <i class="misa-icon-info">i</i>
               <DxTextBox v-model="form.valueInput" width="100%"/>
             </div>
@@ -212,6 +229,10 @@ const emit = defineEmits(['close']);
 // ==========================
 const isManualCode = ref(false);
 const isUnitDropdownOpen = ref(false);
+const isTypeOpen = ref(false);
+const isNatureOpen = ref(false);
+const isValueTypeOpen = ref(false);
+const isValueScopeOpen = ref(false);
 const treeViewRef = ref(null);
 
 const form = ref({
@@ -548,28 +569,55 @@ defineExpose({
 /* =======================================================
    ÉP Ô CHỌN ĐƠN VỊ GIỮ VIỀN XANH KHI ĐANG CHỌN 
    ======================================================= */
-:deep(.misa-dropdownbox) {
+:deep(.misa-dropdownbox), :deep(.misa-selectbox) {
   border: 1px solid #d9d9d9 !important;
   border-radius: 4px !important;
   background-color: #ffffff !important;
   transition: border-color 0.15s ease;
 }
 
-:deep(.misa-dropdownbox.dx-state-hover) {
+:deep(.misa-dropdownbox.dx-state-hover), :deep(.misa-selectbox.dx-state-hover) {
   border-color: #00ab6b !important;
 }
+
 :deep(.misa-dropdownbox .dx-texteditor-input) {
   display: none !important; 
 }
+
 .is-opened:deep(.misa-dropdownbox),
+.is-opened:deep(.misa-selectbox),
 :deep(.misa-dropdownbox.dx-state-focused),
-:deep(.misa-dropdownbox.dx-dropdowneditor-active) {
+:deep(.misa-selectbox.dx-state-focused),
+:deep(.misa-dropdownbox.dx-dropdowneditor-active),
+:deep(.misa-selectbox.dx-dropdowneditor-active) {
   border-color: #00ab6b !important;
-  box-shadow: 0 0 0 2px rgba(0, 171, 107, 0.1) !important; /* Hiệu ứng đổ bóng nhẹ chuẩn MISA */
+  box-shadow: 0 0 0 2px rgba(0, 171, 107, 0.1) !important;
 }
 
-/* Ẩn hoàn toàn input thô ẩn bên dưới của thư viện */
+/* =======================================================
+   ĐỒNG BỘ MŨI TÊN XOAY CHO TẤT CẢ DXSELECTBOX
+   ======================================================= */
+:deep(.misa-selectbox .dx-dropdowneditor-icon::before) {
+  display: none !important;
+}
 
+:deep(.misa-selectbox .dx-dropdowneditor-icon) {
+  width: 0 !important;
+  height: 0 !important;
+  border-left: 5px solid transparent !important;
+  border-right: 5px solid transparent !important;
+  border-top: 5px solid #666666 !important;
+  border-bottom: none !important;
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  margin: auto; 
+  transition: transform 0.2s ease, border-top-color 0.2s ease !important;
+}
+
+:deep(.misa-selectbox.is-opened .dx-dropdowneditor-icon) {
+  transform: rotate(180deg);
+  border-top-color: #00ab6b !important;
+}
 
 /* Khung chứa các thẻ Tag */
 .custom-tag-field {

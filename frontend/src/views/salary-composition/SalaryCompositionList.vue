@@ -50,7 +50,14 @@
     </template>
 
     <div v-if="isExitConfirmVisible" class="exit-confirm-overlay" @click.self="stayOnAddForm">
-      <div class="exit-confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="exit-confirm-title">
+      <div 
+        class="exit-confirm-dialog" 
+        role="dialog" 
+        aria-modal="true" 
+        aria-labelledby="exit-confirm-title"
+        :style="dialogStyle"
+        @mousedown="startDrag"
+      >
         <button class="exit-confirm-close" @click="stayOnAddForm" aria-label="Đóng">×</button>
         <h2 id="exit-confirm-title">Thoát và không lưu?</h2>
         <p>Nếu bạn thoát, các dữ liệu đang nhập liệu sẽ không được lưu lại.</p>
@@ -64,17 +71,65 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import SalaryCompositionTable from '../../components/salary-composition/SalaryCompositionTable.vue';
 import AddSalaryComposition from './components/AddSalaryComposition.vue';
 
 const isAddingNew = ref(false);
 const isExitConfirmVisible = ref(false);
 const formRef = ref(null);
-const tableRef = ref(null); // BỔ SUNG: Tham chiếu đến bảng
+const tableRef = ref(null); 
 
+// ==========================================
+// LOGIC KÉO THẢ (DRAG & DROP) CHO THÔNG BÁO
+// ==========================================
+const isDragging = ref(false);
+const position = ref({ x: 0, y: 0 }); // Vị trí hiện tại
+const dragStart = ref({ x: 0, y: 0 }); // Điểm bắt đầu kéo
+
+// Tính toán style di chuyển và con trỏ chuột
+const dialogStyle = computed(() => ({
+  transform: `translate(${position.value.x}px, ${position.value.y}px)`,
+  cursor: isDragging.value ? 'grabbing' : 'grab'
+}));
+
+const startDrag = (event) => {
+  if (event.target.tagName.toLowerCase() === 'button') return;
+
+  isDragging.value = true;
+  dragStart.value = {
+    x: event.clientX - position.value.x,
+    y: event.clientY - position.value.y
+  };
+  document.addEventListener('mousemove', onDrag);
+  document.addEventListener('mouseup', stopDrag);
+};
+
+const onDrag = (event) => {
+  if (!isDragging.value) return;
+  position.value = {
+    x: event.clientX - dragStart.value.x,
+    y: event.clientY - dragStart.value.y
+  };
+};
+
+const stopDrag = () => {
+  isDragging.value = false;
+  document.removeEventListener('mousemove', onDrag);
+  document.removeEventListener('mouseup', stopDrag);
+};
+
+// ==========================================
+// ĐIỀU HƯỚNG & HÀNH ĐỘNG CỦA FORM
+// ==========================================
 const openAddForm = () => { isAddingNew.value = true; };
-const requestCloseAddForm = () => { isExitConfirmVisible.value = true; };
+
+const requestCloseAddForm = () => { 
+  // Reset vị trí popup về căn giữa màn hình mỗi khi mở lên
+  position.value = { x: 0, y: 0 }; 
+  isExitConfirmVisible.value = true; 
+};
+
 const stayOnAddForm = () => { isExitConfirmVisible.value = false; };
 const closeAddForm = () => {
   isExitConfirmVisible.value = false;
@@ -84,16 +139,12 @@ const closeAddForm = () => {
 const triggerSave = () => { if (formRef.value) formRef.value.save(); };
 const triggerSaveAndAdd = () => { if (formRef.value) formRef.value.saveAndAdd(); };
 
-// BỔ SUNG: Hàm xử lý khi form con báo đã lưu thành công
 const handleSaveSuccess = (newData) => {
-  isAddingNew.value = false; // Đóng form
-  
-  // Gọi hàm loadData() (hoặc fetchData) được phơi bày (expose) từ file Table
+  isAddingNew.value = false; 
   if (tableRef.value) {
     if (typeof tableRef.value.loadData === 'function') {
       tableRef.value.loadData();
     } else if (typeof tableRef.value.addRecord === 'function') {
-      // Nếu đang dùng mảng mock tĩnh, có thể gọi hàm addRecord để nhét data vào bảng
       tableRef.value.addRecord(newData);
     }
   }
@@ -178,26 +229,38 @@ const handleSaveSuccess = (newData) => {
 }
 .btn-outline:hover { background: #f4f5f8; }
 
+
+/* =======================================================
+   CSS CHO POPUP XÁC NHẬN THOÁT 
+   ======================================================= */
 .exit-confirm-overlay {
   position: fixed;
   inset: 0;
   z-index: 1000;
   display: flex;
-  align-items: flex-start;
+  align-items: flex-start; 
   justify-content: center;
-  padding-top: 120px;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.4); 
 }
 
 .exit-confirm-dialog {
   position: relative;
-  width: 320px;
-  min-height: 124px;
-  padding: 16px;
+  width: 420px; 
+  min-height: 160px;
+  padding: 20px 24px;
   background: #ffffff;
-  border-radius: 4px;
+  border-radius: 12px; 
+  margin-top: 35vh; 
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
   color: #111111;
+  transition: border-radius 0.2s ease, box-shadow 0.2s ease;
+}
+
+.exit-confirm-dialog:hover {
+  cursor: grab;
+}
+.exit-confirm-dialog:active {
+  cursor: grabbing;
 }
 
 .exit-confirm-dialog h2 {
@@ -216,8 +279,8 @@ const handleSaveSuccess = (newData) => {
 
 .exit-confirm-close {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 12px;
+  right: 12px;
   width: 24px;
   height: 24px;
   border: none;
@@ -232,41 +295,45 @@ const handleSaveSuccess = (newData) => {
   color: #111111;
 }
 
+/* Các nút bấm dài ra */
 .exit-confirm-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  margin-top: 18px;
+  gap: 16px; 
+  margin-top: 24px;
 }
 
 .btn-stay,
 .btn-exit {
-  height: 32px;
-  padding: 0 16px;
-  border-radius: 4px;
+  height: 32px; 
+  padding: 0 11px; 
+  border-radius: 8px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 400;
   cursor: pointer;
+  min-width: 70px;
 }
 
 .btn-stay {
   background: #ffffff;
   color: #111111;
   border: 1px solid #d9d9d9;
+  width: 80px;
 }
 
 .btn-stay:hover {
-  background: #f4f5f8;
+  background: #e2e5e8;
 }
 
 .btn-exit {
-  background: #00ab6b;
+  background: #019c64;
   color: #ffffff;
   border: 1px solid #00ab6b;
+  min-width: 60px;
 }
 
 .btn-exit:hover {
-  background: #00995f;
+  background: #01784a;
   border-color: #00995f;
 }
 </style>

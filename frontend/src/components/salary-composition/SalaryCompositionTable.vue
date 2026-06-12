@@ -15,13 +15,29 @@
       <DxSelection mode="multiple" show-check-boxes-mode="always" />
 
       <DxToolbar>
-        
-
-        <DxItem location="before" >
+        <DxItem location="before">
           <template #default>
             <div class="toolbar-search">
               <i class="misa-icon mi-search"></i>
-              <input type="text" placeholder="Tìm kiếm" />
+              <input
+                v-model="searchText"
+                type="text"
+                placeholder="Tìm kiếm"
+                @input="handleSearchInput"
+                @keydown.enter="applySearch"
+                @focus="handleSearchInput" 
+              />
+              <ul v-if="isSearchDropdownOpen && searchSuggestions.length > 0" class="search-suggestions">
+                <li 
+                  v-for="item in searchSuggestions" 
+                  :key="item.compositionId" 
+                  @click="selectSuggestion(item)"
+                >
+                  <span class="suggest-name">{{ item.compositionName }}</span>
+                  <span class="suggest-dash"> - </span>
+                  <span class="suggest-code">{{ item.compositionCode }}</span>
+                </li>
+              </ul>
             </div>
           </template>
         </DxItem>
@@ -130,7 +146,7 @@
           <button 
             v-if="data.data.status === 2 || data.data.Status === 2" 
             class="action-btn" style="color: #00ab6b;"
-            title="Tiếp tục theo dõi"
+            title="Đang theo dõi"
             @click="handleUpdateStatusSingle(data.key, 1, data.data)"
           >
             <i class="misa-icon mi-circle-check-green"></i>
@@ -154,65 +170,86 @@
       <DxPager :visible="false" />
     </DxDataGrid>
 
-    <div class="misa-pagination">
-      <div class="pagination-left">
-        Tổng số: <strong>{{ totalRecords }}</strong>
+    <div class="misa-empty-state" v-if="totalRecords === 0 && !isLoading">
+      <svg width="132" height="100" viewBox="0 0 132 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M124.6 69.2C124.6 84.6639 112.064 97.2 96.6 97.2H35.4C19.936 97.2 7.4 84.6639 7.4 69.2V43.8C7.4 28.336 19.936 15.8 35.4 15.8H96.6C112.064 15.8 124.6 28.336 124.6 43.8V69.2Z" fill="#F4F5F8"/>
+        <path d="M66 2.8C71.5228 2.8 76 7.27715 76 12.8V35.8H56V12.8C56 7.27715 60.4772 2.8 66 2.8Z" fill="#E2E4E9"/>
+        <path d="M96 25H36C32.134 25 29 28.134 29 32V68C29 71.866 32.134 75 36 75H96C99.866 75 103 71.866 103 68V32C103 28.134 99.866 25 96 25Z" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="2"/>
+        <path d="M46 41H86M46 51H86M46 61H66" stroke="#D9D9D9" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="82" cy="62" r="14" fill="#00AB6B"/>
+        <path d="M78 62L81 65L87 59" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Không có dữ liệu</span>
+    </div>
+  </div>
+
+  <div class="misa-pagination">
+    <div class="pagination-left">
+      Tổng số: <strong>{{ totalRecords }}</strong>
+    </div>
+    
+    <div class="pagination-right">
+      <span class="page-size-label">Số dòng/trang</span>
+      
+      <div class="page-size-selector">
+        <select v-model="pageSize" @change="onPageSizeChange">
+          <option :value="15">15</option>
+          <option :value="25">25</option>
+          <option :value="50">50</option>
+          <option :value="100">100</option>
+        </select>
       </div>
       
-      <div class="pagination-right">
-        <span class="page-size-label">Số dòng/trang</span>
-        
-        <div class="page-size-selector">
-          <select v-model="pageSize" @change="onPageSizeChange">
-            <option :value="15">15</option>
-            <option :value="25">25</option>
-            <option :value="50">50</option>
-            <option :value="100">100</option>
-          </select>
-        </div>
-        
-        <span class="page-range">
-          <strong>{{ startRecord }} - {{ endRecord }}</strong>
-        </span>
-        
-        <div class="page-navigation">
-          <button class="nav-btn" :disabled="currentPage === 1" @click="changePage(1)">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12L12 19M5 12L12 5M2 5V19"/></svg>
-          </button>
-          <button class="nav-btn" :disabled="currentPage === 1" @click="changePage(currentPage - 1)">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <button class="nav-btn" :disabled="currentPage === totalPages || totalRecords === 0" @click="changePage(currentPage + 1)">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-          </button>
-          <button class="nav-btn" :disabled="currentPage === totalPages || totalRecords === 0" @click="changePage(totalPages)">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L12 5M19 12L12 19M22 5V19"/></svg>
-          </button>
-        </div>
+      <span class="page-range">
+        <strong>{{ startRecord }} - {{ endRecord }}</strong>
+      </span>
+      
+      <div class="page-navigation">
+        <button class="nav-btn" :disabled="currentPage === 1" @click="changePage(1)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M5 12L12 19M5 12L12 5M2 5V19"/></svg>
+        </button>
+        <button class="nav-btn" :disabled="currentPage === 1" @click="changePage(currentPage - 1)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="nav-btn" :disabled="currentPage === totalPages || totalRecords === 0" @click="changePage(currentPage + 1)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <button class="nav-btn" :disabled="currentPage === totalPages || totalRecords === 0" @click="changePage(totalPages)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12H19M19 12L12 5M19 12L12 19M22 5V19"/></svg>
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import axios from 'axios';
 import CustomStore from 'devextreme/data/custom_store';
 import notify from 'devextreme/ui/notify';
+
 import {
   DxDataGrid, DxColumn, DxSelection,
   DxPaging, DxPager, DxToolbar, DxItem
 } from 'devextreme-vue/data-grid';
-const isShowAddPopup = ref(false);
 
-const handleOpenAddPopup = () => {
-  isShowAddPopup.value = true;
-};
-// Tạo tham chiếu đến DataGrid để có thể gọi hàm refresh() sau khi thao tác xong
+// Biến Popup
+const isShowAddPopup = ref(false);
+const handleOpenAddPopup = () => { isShowAddPopup.value = true; };
+
+// Biến cấu hình Grid
 const dataGridRef = ref(null);
+const totalRecords = ref(0); 
+
+// Biến Search Dropdown & Loading
+const searchText = ref('');
+const searchSuggestions = ref([]);
+const isSearchDropdownOpen = ref(false);
+const isLoading = ref(false); 
+let searchTimer = null;
 
 // ==========================================
-// 1. KẾT NỐI BACKEND C#/.NET
+// 1. KẾT NỐI BACKEND C#/.NET BẰNG CUSTOM STORE
 // ==========================================
 const API_URL = 'http://localhost:5094/api/v1/SalaryCompositions';
 
@@ -220,26 +257,24 @@ const dataSource = new CustomStore({
   key: 'compositionId', 
 
   load: async (loadOptions) => {
+    isLoading.value = true; // Bật loading để ẩn Empty State tạm thời
     try {
       const params = {
         skip: loadOptions.skip || 0,
-        take: loadOptions.take || 15,
-        searchValue: loadOptions.searchValue || ''
+        take: loadOptions.take || pageSize.value,
+        searchValue: searchText.value.trim()
       };
       
       const response = await axios.get(API_URL, { params });
-      
       const dataArray = response.data.data; 
       
       if (!Array.isArray(dataArray)) {
-          console.warn("API không trả về mảng data hợp lệ!", response.data);
           return { data: [], totalCount: 0 };
       }
 
+      // Cập nhật tổng số dòng
       const total = response.data.totalRecord || response.data.TotalRecord || dataArray.length;
       totalRecords.value = total;
-
-      console.log("Mảng đưa vào Grid:", dataArray);
 
       return {
         data: dataArray,
@@ -249,6 +284,8 @@ const dataSource = new CustomStore({
     } catch (error) {
       console.error("Lỗi khi load dữ liệu:", error);
       throw 'Data Loading Error';
+    } finally {
+      isLoading.value = false; // Luôn tắt loading sau khi lấy data xong
     }
   },
 
@@ -256,7 +293,6 @@ const dataSource = new CustomStore({
     try {
       await axios.delete(`${API_URL}/${key}`);
     } catch (error) {
-      console.error("Lỗi xóa bản ghi:", error);
       throw 'Delete Error';
     }
   }
@@ -264,13 +300,68 @@ const dataSource = new CustomStore({
 
 
 // ==========================================
-// 2. LOGIC CHỌN HÀNG LOẠT (BATCH SELECTION)
+// 2. LOGIC THANH TÌM KIẾM (SEARCH DROPDOWN)
+// ==========================================
+const handleSearchInput = () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(async () => {
+    const keyword = searchText.value.trim();
+    if (keyword.length > 0) {
+      try {
+        // Chỉ lấy 5 gợi ý nhẹ nhàng
+        const response = await axios.get(`${API_URL}?skip=0&take=5&searchValue=${keyword}`);
+        searchSuggestions.value = response.data.data || [];
+        isSearchDropdownOpen.value = true;
+      } catch (error) {
+        console.error("Lỗi lấy gợi ý:", error);
+      }
+    } else {
+      searchSuggestions.value = [];
+      isSearchDropdownOpen.value = false;
+      applySearch(); // Tải lại bảng rỗng
+    }
+  }, 300); 
+};
+
+const selectSuggestion = (item) => {
+  searchText.value = item.compositionName; // Hiển thị nguyên Tên
+  isSearchDropdownOpen.value = false;
+  applySearch(); // Search thẳng vào lưới DataGrid
+};
+
+const closeSearchDropdown = (event) => {
+  if (!event.target.closest('.toolbar-search')) {
+    isSearchDropdownOpen.value = false;
+  }
+};
+
+const applySearch = () => {
+  currentPage.value = 1;
+  isSearchDropdownOpen.value = false;
+  if (dataGridRef.value && dataGridRef.value.instance) {
+    dataGridRef.value.instance.pageIndex(0);
+    dataGridRef.value.instance.refresh();
+  }
+};
+
+// Đăng ký event click để đóng dropdown search
+onMounted(() => {
+  document.addEventListener('click', closeSearchDropdown);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', closeSearchDropdown);
+});
+
+
+// ==========================================
+// 3. LOGIC CHỌN HÀNG LOẠT & THAO TÁC CƠ BẢN
 // ==========================================
 const selectedRowKeys = ref([]);
 const selectedRowsData = ref([]);
 
-const hasStoppedStatus = computed(() => selectedRowsData.value.some(row => row.Status === 'Ngừng sử dụng' || row.Status === 'Ngừng theo dõi'));
-const hasTrackingStatus = computed(() => selectedRowsData.value.some(row => row.Status === 'Đang theo dõi'));
+const hasStoppedStatus = computed(() => selectedRowsData.value.some(row => row.Status === 'Ngừng sử dụng' || row.Status === 'Ngừng theo dõi' || row.status === 2));
+const hasTrackingStatus = computed(() => selectedRowsData.value.some(row => row.Status === 'Đang theo dõi' || row.status === 1));
 
 const onSelectionChanged = (e) => {
   selectedRowKeys.value = e.selectedRowKeys;
@@ -282,18 +373,12 @@ const deselectAll = () => {
   selectedRowsData.value = [];
 };
 
-
-// ==========================================
-// 3. XỬ LÝ CÁC NÚT BẤM KẾT NỐI API C#
-// ==========================================
-
 const handleDeleteSingle = async (compositionId) => {
   const isConfirm = confirm(`Bạn có chắc chắn muốn xóa thành phần "${compositionId}" không?`);
   if (isConfirm) {
     try {
       await dataSource.remove(compositionId);
       notify("Xóa bản ghi thành công", "success", 3000);
-      
       if(dataGridRef.value) dataGridRef.value.instance.refresh();
     } catch (error) {
       notify("Có lỗi xảy ra khi xóa", "error", 3000);
@@ -318,66 +403,22 @@ const handleUpdateStatusSingle = async (compositionId, newStatus, rowData) => {
       Description: rowData.description || rowData.Description || "",
       IsDisplayOnPayslip: rowData.isDisplayOnPayslip || rowData.IsDisplayOnPayslip || 0,
       SourceType: rowData.sourceType || rowData.SourceType,
-      
       Status: newStatus
     };
 
     await axios.put(`${API_URL}/${compositionId}`, updatedPayload);
-    
     const statusText = newStatus === 1 ? 'Đang theo dõi' : 'Ngừng theo dõi';
     notify(`Đã chuyển sang trạng thái: ${statusText}`, "success", 3000);
-    
     if(dataGridRef.value) dataGridRef.value.instance.refresh();
-
   } catch (error) {
     notify("Lỗi khi cập nhật trạng thái", "error", 3000);
-    
-    if (error.response && error.response.data && error.response.data.errors) {
-      console.error(" Chi tiết các trường bị lỗi Validation từ C#:", error.response.data.errors);
-      alert("Lỗi 400: Sai dữ liệu. Vui lòng mở Console (F12) để xem chi tiết!");
-    } else {
-      console.error("Lỗi:", error);
-    }
-  }
-};
-
-
-// 3.2. Thao tác HÀNG LOẠT 
-const handleBatchDelete = async () => {
-  const isConfirm = confirm(`Bạn có chắc chắn muốn xóa ${selectedRowKeys.value.length} bản ghi đã chọn?`);
-  if (isConfirm) {
-    try {
-      await axios.post(`${API_URL}/BatchDelete`, selectedRowKeys.value);
-      notify("Xóa hàng loạt thành công", "success", 3000);
-      
-      deselectAll(); 
-      if(dataGridRef.value) dataGridRef.value.instance.refresh();
-    } catch (error) {
-      notify("Có lỗi xảy ra khi xóa hàng loạt", "error", 3000);
-    }
-  }
-};
-
-const handleBatchUpdateStatus = async (newStatus) => {
-  try {
-    await axios.put(`${API_URL}/BatchUpdateStatus`, {
-      Ids: selectedRowKeys.value,
-      Status: newStatus
-    });
-    notify(`Đã cập nhật ${selectedRowKeys.value.length} bản ghi sang: ${newStatus}`, "success", 3000);
-    
-    deselectAll(); 
-    if(dataGridRef.value) dataGridRef.value.instance.refresh();
-  } catch (error) {
-    notify("Lỗi khi cập nhật trạng thái hàng loạt", "error", 3000);
   }
 };
 
 
 // ==========================================
-// 4. LOGIC PHÂN TRANG (PAGINATION)
+// 4. LOGIC PHÂN TRANG CUSTOM
 // ==========================================
-const totalRecords = ref(0); 
 const currentPage = ref(1);
 const pageSize = ref(15); 
 
@@ -396,71 +437,36 @@ const endRecord = computed(() => {
 const changePage = (newPage) => {
   if (newPage >= 1 && newPage <= totalPages.value) {
     currentPage.value = newPage;
-    
-    if(dataGridRef.value) {
-       dataGridRef.value.instance.pageIndex(newPage - 1); 
-    }
+    if(dataGridRef.value) dataGridRef.value.instance.pageIndex(newPage - 1); 
   }
 };
 
 const onPageSizeChange = (event) => {
   currentPage.value = 1;
   if (event && event.target) event.target.blur();
-  
-  if(dataGridRef.value) {
-     dataGridRef.value.instance.pageSize(pageSize.value);
-  }
+  if(dataGridRef.value) dataGridRef.value.instance.pageSize(pageSize.value);
 };
+
+
 // ==========================================
-// 5. HÀM LÀM MỚI BẢNG CHO COMPONENT CHA GỌI
+// 5. HÀM EXPOSE CHO COMPONENT CHA GỌI
 // ==========================================
 const loadData = () => {
   if (dataGridRef.value && dataGridRef.value.instance) {
     dataGridRef.value.instance.refresh(); 
   }
 };
+defineExpose({ loadData });
 
-defineExpose({ 
-  loadData 
-});
+
 // ==========================================
-// HÀM FORMAT DỮ LIỆU TỪ SỐ (DB) SANG CHỮ (UI)
+// 6. FORMAT DỮ LIỆU TỪ SỐ SANG CHỮ
 // ==========================================
-
-const formatType = (cellInfo) => {
-  if (cellInfo.value === 1) return 'Lương';
-  if (cellInfo.value === 2) return 'Phụ cấp';
-  if (cellInfo.value === 3) return 'Phúc lợi';
-  return cellInfo.valueText;
-};
-
-const formatNature = (cellInfo) => {
-  if (cellInfo.value === 1) return 'Thu nhập';
-  if (cellInfo.value === 2) return 'Khấu trừ';
-  if (cellInfo.value === 3) return 'Khác';
-  return cellInfo.valueText;
-};
-
-// 3. Format Kiểu giá trị
-const formatValueType = (cellInfo) => {
-  if (cellInfo.value === 1) return 'Tiền tệ';
-  if (cellInfo.value === 2) return 'Phần trăm';
-  if (cellInfo.value === 3) return 'Hệ số';
-  return cellInfo.valueText;
-};
-
-// 4. Format Nguồn tạo
-const formatSource = (cellInfo) => {
-  if (cellInfo.value === 1) return 'Hệ thống';
-  if (cellInfo.value === 2) return 'Tự thêm';
-  return cellInfo.valueText;
-};
-
-const getUnitName = (id) => {
-  if (!id) return '';
-  if (id === '11111111-1111-1111-1111-111111111111') return 'Công ty Tổng Test';
-  return 'Tất cả đơn vị'; 
-};
+const formatType = (c) => c.value === 1 ? 'Lương' : (c.value === 2 ? 'Phụ cấp' : (c.value === 3 ? 'Phúc lợi' : c.valueText));
+const formatNature = (c) => c.value === 1 ? 'Thu nhập' : (c.value === 2 ? 'Khấu trừ' : (c.value === 3 ? 'Khác' : c.valueText));
+const formatValueType = (c) => c.value === 1 ? 'Tiền tệ' : (c.value === 2 ? 'Phần trăm' : (c.value === 3 ? 'Hệ số' : c.valueText));
+const formatSource = (c) => c.value === 1 ? 'Hệ thống' : (c.value === 2 ? 'Tự thêm' : c.valueText);
+const getUnitName = (id) => id === '11111111-1111-1111-1111-111111111111' ? 'Công ty Tổng Test' : 'Tất cả đơn vị'; 
 </script>
 
 <style scoped>
@@ -473,6 +479,7 @@ const getUnitName = (id) => {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  position: relative; /* Rất quan trọng để Empty state nằm đúng chỗ */
 }
 
 :deep(.dx-datagrid) {
@@ -482,7 +489,7 @@ const getUnitName = (id) => {
 }
 
 /* ==========================================
-   2. TÙY CHỈNH THANH CUỘN (SCROLLBAR)
+   2. TÙY CHỈNH THANH CUỘN
    ========================================== */
 :deep(.dx-scrollbar-vertical),
 :deep(.dx-scrollbar-vertical .dx-scrollable-scroll) {
@@ -497,7 +504,7 @@ const getUnitName = (id) => {
 }
 
 /* ==========================================
-   3. THANH CÔNG CỤ (TOOLBAR CƠ BẢN)
+   3. THANH CÔNG CỤ (TOOLBAR)
    ========================================== */
 :deep(.dx-toolbar) {
   padding: 8px 16px;
@@ -507,9 +514,81 @@ const getUnitName = (id) => {
 .toolbar-search { 
   display: flex; align-items: center; border: 1px solid var(--border-color); 
   border-radius: 4px; padding: 4px 8px; width: 250px; 
+  position: relative; 
 }
 .toolbar-search input { border: none; outline: none; margin-left: 8px; width: 100%; }
 .toolbar-search:hover { border-color: #00ab6b; }
+
+/* CSS Mới Cho Menu Gợi Ý Search */
+.search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%; 
+  min-width: 250px;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  list-style: none;
+  padding: 4px 0;
+  margin: 4px 0 0 0;
+  z-index: 1000;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.search-suggestions li {
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  transition: background-color 0.15s ease;
+}
+
+.search-suggestions li:hover {
+  background: #f4f5f8;
+}
+
+.search-suggestions li:hover .suggest-name,
+.search-suggestions li:hover .suggest-dash,
+.search-suggestions li:hover .suggest-code {
+  color: #00ab6b;
+}
+
+.suggest-name { font-weight: 500; color: #111111; }
+.suggest-dash { margin: 0 4px; color: #666666; }
+.suggest-code { color: #666666; }
+
+/* CSS Cho Màn Hình Trống (Empty State) */
+.misa-empty-state {
+  position: absolute;
+  top: 50px; 
+  left: 0;
+  width: 100%;
+  height: calc(100% - 50px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff; 
+  z-index: 5;
+}
+
+.misa-empty-state svg {
+  margin-bottom: 16px;
+}
+
+.misa-empty-state span {
+  color: #666666;
+  font-size: 13px;
+}
+
+:deep(.dx-datagrid-nodata) {
+  display: none !important; /* Xóa chữ "No data" xấu xí mặc định */
+}
+
 
 .toolbar-dropdown { 
   display: flex; align-items: center; justify-content: space-between; 
@@ -529,7 +608,7 @@ const getUnitName = (id) => {
 .icon-btn:hover { background-color: #f4f5f8; color: var(--text-primary); }
 
 /* ==========================================
-   3.1. THANH THAO TÁC HÀNG LOẠT (BATCH ACTIONS)
+   3.1. THANH THAO TÁC HÀNG LOẠT 
    ========================================== */
 .batch-info {
   display: flex; align-items: center; gap: 12px; font-size: 13px;
@@ -547,7 +626,6 @@ const getUnitName = (id) => {
   font-weight: 500; cursor: pointer; transition: all 0.2s;
 }
 
-/* Các loại màu nút thao tác hàng loạt */
 .btn-batch-warning { border: 1px solid #f39c12; color: #f39c12; }
 .btn-batch-warning:hover { background-color: #fdf2e9; }
 
@@ -558,7 +636,7 @@ const getUnitName = (id) => {
 .btn-batch-danger:hover { background-color: #fdf0ef; }
 
 /* ==========================================
-   4. CỘT TIÊU ĐỀ & ĐƯỜNG KẺ BẢNG (HEADERS & LINES)
+   4. CỘT TIÊU ĐỀ & ĐƯỜNG KẺ BẢNG 
    ========================================== */
 :deep(.dx-datagrid-headers) { 
   background-color: #f4f5f8 !important; color: var(--text-color); font-weight: 600; font-size: 14px; 
@@ -604,7 +682,7 @@ const getUnitName = (id) => {
 }
 
 /* ==========================================
-   6. CỘT CHỨC NĂNG KHI HOVER (ROW ACTIONS)
+   6. CỘT CHỨC NĂNG KHI HOVER
    ========================================== */
 .row-actions {
   display: none; 
@@ -650,7 +728,7 @@ const getUnitName = (id) => {
 }
 
 /* ==========================================
-   7. TÙY CHỈNH Ô CHECKBOX (TÍCH CHỌN)
+   7. TÙY CHỈNH Ô CHECKBOX
    ========================================== */
 :deep(.dx-checkbox-checked .dx-checkbox-icon) {
   background-color: #00ab6b !important; border-color: #00ab6b !important; color: #ffffff !important; 
@@ -665,13 +743,13 @@ const getUnitName = (id) => {
 }
 
 /* ==========================================
-   8. CỘT TRẠNG THÁI (STATUS BADGES)
+   8. CỘT TRẠNG THÁI 
    ========================================== */
 .status-badge { display: flex; align-items: center; gap: 6px; }
 .status-tracking { padding: 2px 8px; border: 1px solid #00ab6b; border-radius: 8px; background-color: #e5f6ed; color: #00ab6b; font-weight: 500; }
 .status-stopped { padding: -1px 8px; border: 1px solid #f39c12; border-radius: 8px; background-color: #fdf2e9; color: #f39c12; font-weight: 500; }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.status-tracking .status-dot { background-color: #00ab6b; }
+.status-tracking .status-dot { background-color: #00ab6b;  }
 .status-stopped .status-dot { background-color: #f39c12; }
 
 /* ==========================================
