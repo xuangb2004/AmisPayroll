@@ -18,9 +18,9 @@ namespace AmisPayroll.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPaging([FromQuery] int skip = 0, [FromQuery] int take = 15, [FromQuery] string? searchValue = null)
+        public async Task<IActionResult> GetPaging([FromQuery] int skip = 0, [FromQuery] int take = 15, [FromQuery] string? searchValue = null, [FromQuery] int? status = null)
         {
-            var (data, totalRecord) = await _salaryCompositionService.GetPagingAsync(skip, take, searchValue);
+            var (data, totalRecord) = await _salaryCompositionService.GetPagingAsync(skip, take, searchValue, status);
             
             return Ok(new
             {

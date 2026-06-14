@@ -67,6 +67,21 @@
         </div>
       </div>
     </div>
+    <Transition name="toast-slide">
+      <div v-if="isShowSuccessToast" class="misa-toast-success">
+        <svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/>
+          <path d="M8 12.5L11 15.5L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="toast-text">Lưu thành công</span>
+        
+        <button class="toast-close" @click="closeToast" aria-label="Đóng thông báo">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 6L6 18M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -79,15 +94,16 @@ const isAddingNew = ref(false);
 const isExitConfirmVisible = ref(false);
 const formRef = ref(null);
 const tableRef = ref(null); 
+const isShowSuccessToast = ref(false);
+let toastTimeout = null;
 
 // ==========================================
-// LOGIC KÉO THẢ (DRAG & DROP) CHO THÔNG BÁO
+// LOGIC KÉO THẢ  CHO THÔNG BÁO
 // ==========================================
 const isDragging = ref(false);
-const position = ref({ x: 0, y: 0 }); // Vị trí hiện tại
-const dragStart = ref({ x: 0, y: 0 }); // Điểm bắt đầu kéo
+const position = ref({ x: 0, y: 0 }); 
+const dragStart = ref({ x: 0, y: 0 }); 
 
-// Tính toán style di chuyển và con trỏ chuột
 const dialogStyle = computed(() => ({
   transform: `translate(${position.value.x}px, ${position.value.y}px)`,
   cursor: isDragging.value ? 'grabbing' : 'grab'
@@ -141,6 +157,14 @@ const triggerSaveAndAdd = () => { if (formRef.value) formRef.value.saveAndAdd();
 
 const handleSaveSuccess = (newData) => {
   isAddingNew.value = false; 
+  
+  isShowSuccessToast.value = true;
+  
+  if (toastTimeout) clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => {
+    isShowSuccessToast.value = false;
+  }, 3000); 
+  
   if (tableRef.value) {
     if (typeof tableRef.value.loadData === 'function') {
       tableRef.value.loadData();
@@ -149,19 +173,26 @@ const handleSaveSuccess = (newData) => {
     }
   }
 };
+
+const closeToast = () => {
+  isShowSuccessToast.value = false;
+  if (toastTimeout) {
+    clearTimeout(toastTimeout);
+  }
+};
 </script>
 
 <style scoped>
 /* Tổng thể trang */
 .salary-page-container {
   display: flex; flex-direction: column; height: 100%; width: 100%;
-  background-color: #f4f5f8; 
+  background-color: #f1f2f5; 
   overflow: hidden;
 }
 
 /* Header & Content của màn hình danh sách */
 .page-header { display: flex; justify-content: space-between; align-items: center; padding: 0 0 8px 0; }
-.page-title { font-size: 16px; font-weight: 700; color: #212121; }
+.page-title { font-size: 20px; font-weight: 700; color: #212121; }
 .page-actions { display: flex; gap: 12px; align-items: center; }
 .page-content-grid { flex: 1; background: #fff; border-radius: 4px; overflow: hidden; }
 
@@ -335,5 +366,69 @@ const handleSaveSuccess = (newData) => {
 .btn-exit:hover {
   background: #01784a;
   border-color: #00995f;
+}
+/* =======================================================
+   CSS CHO TOAST THÔNG BÁO LƯU THÀNH CÔNG
+   ======================================================= */
+.misa-toast-success {
+  position: fixed;
+  top: 32px; 
+  left: 50%;
+  transform: translateX(-50%); 
+  z-index: 9999;
+  background-color: #00ab6b;
+  padding: 12px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 171, 107, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-left: 4px solid #00ab6b; 
+  min-width: 260px;
+}
+.toast-left {
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+}
+.toast-icon {
+  flex-shrink: 0; 
+}
+.toast-text {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  flex: 1; 
+  text-align: left;
+}
+
+.toast-slide-enter-active,
+.toast-slide-leave-active {
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.toast-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-left: 8px;
+  opacity: 0.7; 
+  transition: opacity 0.2s ease;
+}
+.toast-close:hover {
+  opacity: 1; 
+}
+.toast-slide-enter-active,
+.toast-slide-leave-active {
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.toast-slide-enter-from,
+.toast-slide-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -30px); 
 }
 </style>

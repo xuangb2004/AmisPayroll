@@ -313,12 +313,12 @@ body {
     background-color: #ff6161 !important;
 }
 .mi-circle-check-green {
-    width: 24px;
+    width: 20px;
     height: 21px;
     -webkit-mask-image: url("https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg");
     mask-image: url("https://testcdnamisapp.misacdn.net/apps/payroll/static/img/ICON_V3_1-qvutYp_o.svg");
     -webkit-mask-position: -143px -41px;
-    mask-position: -142.4px -40px;
+    mask-position: -142px -40px;
     background-color: #25b973 !important;
 }
 .ms-table__icon_nodata {
@@ -328,6 +328,16 @@ body {
     width: 195px;
     height: 133px;
     background-position: -152px -3046px;
+}
+.ms-icon-filter-fill {
+    width: 16px;
+    height: 16px;
+    -webkit-mask-image: url("data:image/svg+xml,%3csvg%20width='16'%20height='16'%20viewBox='0%200%2016%2016'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M2.66666%202.6665H13.3333V4.1145C13.3332%204.4681%2013.1927%204.80718%2012.9427%205.05717L9.99999%207.99984V12.6665L5.99999%2013.9998V8.33317L3.01332%205.04784C2.79029%204.80245%202.66669%204.48277%202.66666%204.15117V2.6665Z'%20fill='black'%20stroke='black'%20stroke-width='1'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e");
+    mask-image: url("data:image/svg+xml,%3csvg%20width='16'%20height='16'%20viewBox='0%200%2016%2016'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M2.66666%202.6665H13.3333V4.1145C13.3332%204.4681%2013.1927%204.80718%2012.9427%205.05717L9.99999%207.99984V12.6665L5.99999%2013.9998V8.33317L3.01332%205.04784C2.79029%204.80245%202.66669%204.48277%202.66666%204.15117V2.6665Z'%20fill='black'%20stroke='black'%20stroke-width='1'%20stroke-linecap='round'%20stroke-linejoin='round'/%3e%3c/svg%3e");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    background-color: rgb(14 160 102);
 }
 .dx-datagrid {
   font-family: "Inter", Helvetica, Arial, sans-serif;

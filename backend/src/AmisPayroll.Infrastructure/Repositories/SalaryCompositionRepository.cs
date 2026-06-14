@@ -36,30 +36,35 @@ namespace AmisPayroll.Infrastructure.Repositories
             return count > 0;
         }
 
-        public async Task<(IEnumerable<dynamic> Data, int TotalCount)> GetPagingAsync(int skip, int take, string? searchValue)
+       public async Task<(IEnumerable<dynamic> Data, int TotalRecord)> GetPagingAsync(int skip, int take, string? searchValue, int? status = null)
         {
             using var connection = _connectionFactory.CreateConnection();
-            
             string searchPattern = $"%{searchValue ?? ""}%";
 
-            string sql = @"
+            string statusQuery = status.HasValue ? " AND sc.status = @Status " : "";
+
+            
+            string sql = $@"
                 SELECT COUNT(1) 
-                FROM pa_salary_composition 
-                WHERE composition_code LIKE @Search OR composition_name LIKE @Search;
+                FROM pa_salary_composition sc
+                WHERE (sc.composition_code LIKE @Search OR sc.composition_name LIKE @Search)
+                {statusQuery};
 
                 SELECT sc.*, org.organization_name AS OrganizationName
                 FROM pa_salary_composition sc
                 LEFT JOIN pa_organization org ON sc.organization_id = org.organization_id
-                WHERE sc.composition_code LIKE @Search OR sc.composition_name LIKE @Search
+                WHERE (sc.composition_code LIKE @Search OR sc.composition_name LIKE @Search)
+                {statusQuery}
                 LIMIT @Take OFFSET @Skip;";
 
-            var parameters = new { Search = searchPattern, Take = take, Skip = skip };
+            var parameters = new { Search = searchPattern, Take = take, Skip = skip, Status = status };
 
             using var multi = await connection.QueryMultipleAsync(sql, parameters);
-            int totalCount = await multi.ReadFirstAsync<int>();
+            
+            int totalRecord = await multi.ReadFirstAsync<int>();
             var data = await multi.ReadAsync<dynamic>();
 
-            return (data, totalCount);
+            return (data, totalRecord);
         }
 
         public override async Task<int> InsertAsync(SalaryComposition entity)

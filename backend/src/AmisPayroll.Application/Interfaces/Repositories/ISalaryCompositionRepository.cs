@@ -11,6 +11,6 @@ namespace AmisPayroll.Application.Interfaces.Repositories
     {
         Task<bool> CheckDuplicateCodeAsync(string code);
         Task<bool> CheckDuplicateCodeAsync(string code, Guid excludeId);
-        Task<(IEnumerable<SalaryCompositionDto> Data, int TotalRecord)> GetPagingAsync(int skip, int take, string? searchValue);
+        Task<(IEnumerable<dynamic> Data, int TotalRecord)> GetPagingAsync(int skip, int take, string? searchValue,int? status = null);
     }
 }

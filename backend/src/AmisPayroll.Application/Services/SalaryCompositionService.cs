@@ -24,12 +24,12 @@ namespace AmisPayroll.Application.Services
         /// <summary>
         /// API BƯỚC 1: Lấy danh sách phân trang, tìm kiếm và JOIN tên đơn vị
         /// </summary>
-        public async Task<(IEnumerable<SalaryCompositionDto> Data, int TotalRecord)> GetPagingAsync(int skip, int take, string? searchValue)
+        public async Task<(IEnumerable<SalaryCompositionDto> Data, int TotalRecord)> GetPagingAsync(int skip, int take, string? searchValue, int? status = null)
         {
-            var (rawData, totalCount) = await _repository.GetPagingAsync(skip, take, searchValue);
+            var (rawData, totalCount) = await _repository.GetPagingAsync(skip, take, searchValue, status);
 
             var dtoList = new List<SalaryCompositionDto>();
-            foreach (var item in rawData)
+            foreach (dynamic item in rawData)
             {
                 dtoList.Add(new SalaryCompositionDto
                 {
@@ -149,15 +149,15 @@ namespace AmisPayroll.Application.Services
                 CalculationFormula = dto.CalculationFormula,
                 Description = dto.Description,
                 IsDisplayOnPayslip = dto.IsDisplayOnPayslip,
-                SourceType = SourceType.Custom, // Mặc định tự thêm mới là Custom
-                Status = Status.Tracking      // Mặc định tạo mới là Đang theo dõi
+                SourceType = SourceType.Custom, 
+                Status = Status.Tracking     
             };
 
             return await _repository.InsertAsync(entity);
         }
 
         /// <summary>
-        /// Cập nhật thành phần lương (Sửa luôn lỗi bấm Ngừng theo dõi bị đứng im UI)
+        /// Cập nhật thành phần lương 
         /// </summary>
         public async Task<int> UpdateAsync(Guid id, UpdateSalaryCompositionDto dto)
         {
